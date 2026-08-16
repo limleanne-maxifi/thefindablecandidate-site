@@ -1,0 +1,43 @@
+# The Findable Candidate — marketing site
+# Static HTML. No framework, no bundler, no external requests (invariant 9).
+
+[build]
+  publish = "site"
+  # The build "step" is the preflight. A failing invariant fails the deploy —
+  # which is the entire reason for moving off Netlify Drop. Never replace this
+  # with a no-op to get a deploy out.
+  command = "node scripts/preflight.mjs"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# ---------------------------------------------------------------------------
+# Headers
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+
+    # CSP is REPORT-ONLY until you have loaded all five pages with DevTools open
+    # and seen zero violations. Then delete the -Report-Only suffix below.
+    #
+    # Built from what the pages actually do:
+    #   'unsafe-inline' — every page carries inline <style>, inline <script>
+    #                     and inline onclick handlers. Removing it is a rebuild,
+    #                     not a config change.
+    #   data:           — the <select> chevron is a data: URI SVG.
+    #   connect-src     — fetch()/sendBeacon to the n8n capture webhooks.
+    #                     Stripe and wa.me are navigations (window.open / <a>),
+    #                     not fetches, so they need no connect-src entry.
+    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://lloop.app.n8n.cloud; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    # Short cache: these pages carry live prices and a self-reverting pre-order
+    # block (invariant 12). A long cache would keep a stale price on screen.
+    Cache-Control = "public, max-age=0, must-revalidate"

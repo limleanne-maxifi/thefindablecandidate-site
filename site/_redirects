@@ -1,0 +1,25 @@
+# The Findable Candidate — source-path rewrites
+#
+# INVARIANT 3 — every rule below MUST use status 200, never 301.
+# 200 is a rewrite: the URL stays /li, and the page reads location.pathname to
+# tag the traffic source. A 301 rewrites the URL to /index.html and every lead
+# reports source: direct, destroying the only measurement the link scheme exists
+# for. scripts/preflight.mjs fails the build if a 30x appears here.
+#
+# The page's own map (findability-checklist source, SOURCE resolver):
+#   check → video · li → linkedin · tt → tiktok · fb → facebook
+#   ig → instagram · yt → youtube · checklist → written · shared → peer-share
+#
+# / is served by site/index.html directly and needs no rule.
+
+/check      /index.html   200
+/li         /index.html   200
+/tt         /index.html   200
+/fb         /index.html   200
+/ig         /index.html   200
+/yt         /index.html   200
+/checklist  /index.html   200
+/shared     /index.html   200
+
+# Real directories — no rules needed, listed here so nobody "tidies" them in:
+#   /file  /intake  /privacy  /terms

@@ -1,0 +1,11 @@
+node_modules/
+.netlify/
+.DS_Store
+*.tmp
+*.log
+
+# Never commit environment files. There are no secrets in the static pages
+# themselves — the Stripe links are public payment links and the n8n webhook is
+# a public endpoint — but keep the habit.
+.env
+.env.*

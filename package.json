@@ -1,0 +1,14 @@
+{
+  "name": "thefindablecandidate-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Findable Candidate marketing site — static HTML, deployed to Netlify from Git",
+  "scripts": {
+    "preflight": "node scripts/preflight.mjs",
+    "pull": "bash scripts/pull-live.sh",
+    "serve": "node scripts/serve.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
