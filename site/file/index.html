@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>The Candidate File — I'll run the search a recruiter runs</title>
+<meta name="description" content="I run the search a recruiter would run for your role, manually, in a paid LinkedIn Recruiter seat — and tell you whether you came up, where you ranked, and which filter kept you out.">
+<style>
+:root{
+  --navy:#1F3864;--navy-deep:#182C4E;--amber:#E8B33C;--off:#F8F9FA;--blue:#2E6FD8;
+  --ink:#12192B;--muted:#55607A;--line:#DCE1EB;--line-soft:#E8ECF3;--tint:#F0F4FB;
+  --on-navy:#C8D2E4;--on-navy-dim:#A6B4CE;
+  --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--off);color:var(--ink);line-height:1.55;font-size:16px}
+header,.cta,.proof{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.wrap{max-width:660px;margin:0 auto;padding:0 20px}
+header{background:var(--navy);color:#fff;padding:44px 20px 40px}
+.brand{font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:20px}
+.brand::after{content:"";display:block;width:34px;height:2px;background:var(--amber);margin-top:14px}
+h1{font-size:clamp(30px,7.2vw,44px);line-height:1.12;letter-spacing:-.6px;font-weight:400;max-width:18ch;margin:0 0 18px}
+header p{font-size:16px;color:var(--on-navy);max-width:58ch;line-height:1.62}
+header p.lede{margin-top:20px;padding-top:18px;border-top:1px solid rgba(200,210,228,.28);color:#fff;font-weight:500}
+.card{background:#fff;border:1px solid var(--line);padding:28px 20px;margin-top:24px}
+.card:first-child{margin-top:28px}
+.sect{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px}
+h2{font-size:22px;color:var(--navy);letter-spacing:-.4px;line-height:1.25;font-weight:500;margin-bottom:8px}
+p.why{font-size:15px;color:var(--muted);line-height:1.62;max-width:56ch}
+p.why+p.why{margin-top:12px}
+p.why b{color:var(--ink);font-weight:500}
+ol.steps{list-style:none;counter-reset:s;margin-top:22px;border-bottom:1px solid var(--line-soft)}
+ol.steps li{counter-increment:s;position:relative;padding:16px 0 16px 44px;border-top:1px solid var(--line-soft)}
+ol.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:17px;font-size:12px;font-weight:700;color:var(--amber);letter-spacing:1px;font-variant-numeric:tabular-nums}
+ol.steps b{display:block;font-weight:500;font-size:15.5px;margin-bottom:4px}
+ol.steps span{font-size:14px;color:var(--muted);line-height:1.6}
+.sample{background:var(--tint);border-left:3px solid var(--navy);padding:20px 18px;margin-top:22px}
+.sample .k{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px}
+.sample p{font-size:15px;line-height:1.62}
+.sample .hl{background:#FBEDCB;padding:1px 4px;font-weight:500}
+.proof{background:var(--navy);color:#fff;padding:26px 22px;margin:24px -20px 0}
+.proof .k{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;font-weight:700;color:var(--on-navy-dim);margin-bottom:12px}
+.proof p{font-size:16px;color:#fff;line-height:1.6;max-width:52ch}
+.proof p.src{font-size:12.5px;color:var(--on-navy);margin-top:14px;line-height:1.6}
+.proof a{color:var(--amber)}
+.cta{background:var(--amber);color:var(--navy);padding:26px 22px;margin:24px -20px 0}
+.cta .k{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.cta h3{font-size:24px;font-weight:500;letter-spacing:-.5px;line-height:1.2;margin-bottom:8px}
+.cta p{font-size:15px;line-height:1.6;max-width:48ch;margin-bottom:18px}
+.cta .terms{font-size:12.5px;margin-top:12px;font-variant-numeric:tabular-nums lining-nums}
+a.buy{display:block;text-align:center;text-decoration:none;background:var(--navy);color:#fff;font-size:16px;font-weight:500;padding:15px 22px;border-radius:3px;line-height:1.25}
+a.buy:hover{background:var(--navy-deep)}
+a.buy:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.note{font-size:13px;color:var(--muted);margin-top:22px;padding-top:18px;border-top:1px solid var(--line-soft);line-height:1.65}
+.note a{color:var(--blue)}
+footer{padding:32px 20px 60px;text-align:center;font-size:12.5px;color:var(--muted);line-height:1.7}
+footer a{color:var(--blue)}
+@media (min-width:600px){
+  header{padding:60px 20px 52px}
+  .card{padding:34px 32px}
+  .proof,.cta{margin-left:-32px;margin-right:-32px;padding-left:32px;padding-right:32px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">The Findable Candidate</div>
+    <h1>I'll run the search a recruiter runs. I'll tell you if you came up.</h1>
+    <p>You've applied and heard nothing back. Not a no — nothing. The question that keeps you up isn't whether they liked you. It's whether they ever saw you at all.</p>
+    <p class="lede">Rejection is information. Silence isn't. This ends the guessing.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <div class="sect">The actual problem</div>
+    <h2>You can't tell if you're invisible or just not good enough.</h2>
+    <p class="why">Those two need opposite fixes. If recruiters are seeing you and passing, you need a stronger case. If they were never shown you at all, your case is irrelevant — nobody read it.</p>
+    <p class="why"><b>Right now you have no way to tell which one you're living.</b> So you do the only thing available: apply to more things. Which, if the second one is true, changes nothing.</p>
+
+    <div class="sample">
+      <div class="k">What a finding actually looks like</div>
+      <p>You did not appear in the 210-result search. Removing the <span class="hl">Job Titles</span> filter admitted you at rank 47 of 1,180 — so that one field is what excluded you. The ten profiles ranked highest all carry the exact string <span class="hl">"Head of Corporate Communications"</span>. Yours reads "Communications leader | Storyteller | Strategist."</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sect">How it works</div>
+    <h2>Three steps. One real search.</h2>
+    <ol class="steps">
+      <li><b>You tell me the role</b><span>The exact job title you want next, where, at what level, in which industry. That's what builds the search — the same filters a recruiter would set.</span></li>
+      <li><b>I run it in LinkedIn Recruiter</b><span>Manually, in a paid seat, screen recorded. First I find you by name to prove you're in the index. Then I run the real search and remove one filter at a time until you appear.</span></li>
+      <li><b>You get the File</b><span>Whether you came up, where you ranked, which single filter excluded you, what the top ten carry that you don't — and one thing to change tonight.</span></li>
+    </ol>
+
+    <div class="proof">
+      <div class="k">Why the search is the thing to measure</div>
+      <p>LinkedIn's own published research says its recruiter ranking is trained to predict whether a candidate will reply to a message — not whether they're the best fit. Two equally qualified people don't rank equally.</p>
+      <p class="src">Sources: LinkedIn Talent Search papers, <a href="https://arxiv.org/abs/1809.06481v1">SIGIR 2018</a> · <a href="https://arxiv.org/pdf/1809.06473">CIKM 2018</a> · <a href="https://arxiv.org/abs/1902.09041">WWW 2019</a>, and an independent <a href="https://arxiv.org/abs/2511.10752">AAAI 2026 audit</a>. I don't use figures I can't trace.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sect">The method</div>
+    <h2>You don't have to trust me. You can check me.</h2>
+    <p class="why">Every File publishes the full query — the exact filters, the tier, the date, the result count. Run it yourself if you want to. <b>A published query can be checked; a claim can only be believed.</b></p>
+    <p class="why"><b>Run manually, in a paid seat.</b> No scraping, no bots, no extraction tools. A person builds the search and runs it, at your request.</p>
+    <p class="why"><b>Scope is always declared.</b> Search tiers see different slices of LinkedIn. Yours states which tier ran it. If you fall outside that tier's reach, you're reported as out of scope — never as absent.</p>
+    <p class="why"><b>One filter at a time.</b> Filters come off one by one until you appear. The first removal that admits you is the thing excluding you. That's a cause, not a guess.</p>
+    <p class="why"><b>What this doesn't claim.</b> It measures whether you get found. Not whether you get hired. Anyone promising the second from a profile edit is selling you something.</p>
+
+    <div class="cta" id="cta">
+      <div class="k" id="ctak">The Candidate File</div>
+      <h3 id="ctah">S$28</h3>
+      <p id="ctap">One search, run by hand, reported in full. Delivered by email.</p>
+      <a class="buy" id="buy" href="#">Order the File</a>
+      <p class="terms" id="ctaterms">7-day no-questions refund · findable ≠ hireable</p>
+    </div>
+
+    <p class="note"><b>On the queue:</b> searches run in batches by role — everyone chasing the same title, market and level goes into one run. That batching is why it costs S$28 rather than what an hour of manual searching normally costs. You'll get a delivery date when you order, and I'll email you if it moves. Not sure yet? <a href="/checklist">Run the free checklist first</a> — three minutes, no payment.</p>
+  </div>
+
+</div>
+
+<footer>
+  <b>The Candidate File</b> — from The Findable Candidate, by Maxifi Digital.<br>
+  Method v2.1 · observed search · full protocol published.<br>
+  <a href="/privacy">Privacy</a> · <a href="/terms">Terms &amp; refunds</a>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   CONFIG — same two Stripe links as the checklist. Keep them in sync.
+   ════════════════════════════════════════════════════════════════════ */
+var CONFIG = {
+  orderPre:     "https://buy.stripe.com/00w00i3MWfMu11x9g76g801",
+  orderList:    "https://buy.stripe.com/aFa3cu3MW8k29y30JB6g802",
+  preorderEnds: "2026-08-10"
+};
+
+/* Reverts itself on the 11th. A deadline that slides is fake scarcity,
+   so the page enforces it rather than relying on anyone remembering. */
+(function(){
+  var pre = new Date().toISOString().slice(0,10) <= CONFIG.preorderEnds;
+  var url = pre ? (CONFIG.orderPre||CONFIG.orderList) : CONFIG.orderList;
+  if(!url){ document.getElementById("cta").style.display="none"; return; }
+  document.getElementById("buy").href = url;
+  if(pre){
+    document.getElementById("ctak").textContent   = "Pre-order · closes 10 August";
+    document.getElementById("ctah").textContent   = "S$9.80";
+    document.getElementById("ctap").textContent   = "One search, run by hand, reported in full. Delivered by email.";
+    document.getElementById("buy").textContent    = "Pre-order the File — S$9.80";
+    document.getElementById("ctaterms").textContent = "First 20 only · delivered by 22 August · S$28 from 11 August · 7-day refund";
+  }
+})();
+</script>
+</body>
+</html>

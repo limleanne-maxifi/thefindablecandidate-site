@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>The Findability Checklist — can recruiters actually find you?</title>
+<style>
+:root{
+  --navy:#1F3864;
+  --navy-deep:#182C4E;
+  --amber:#E8B33C;
+  --off:#F8F9FA;
+  --blue:#2E6FD8;
+  --ink:#12192B;
+  --muted:#55607A;
+  --line:#DCE1EB;
+  --line-soft:#E8ECF3;
+  --tint:#F0F4FB;
+  --on-navy:#C8D2E4;
+  --on-navy-dim:#A6B4CE;
+  --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--off);color:var(--ink);line-height:1.55;font-size:16px}
+/* One typeface across the page. Figures use tabular lining numerals so the
+   digits hold a fixed column as the score climbs; data labels carry their
+   register with uppercase + wide tracking rather than a monospaced face.
+   Weights are restricted to 400/500/700 — every one a real cut, never synthesised. */
+.wrap{max-width:660px;margin:0 auto;padding:0 20px 72px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---------- header: authority surface ---------- */
+header{background:var(--navy);color:#fff;padding:44px 20px 40px}
+/* Light text on a dark field is over-thickened by subpixel antialiasing.
+   Grayscale AA on the dark surfaces only — leaves dark-on-light text alone. */
+header,.go,.bandbig{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.hin{max-width:660px;margin:0 auto}
+header .brand{font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:20px}
+header .brand::after{content:"";display:block;width:34px;height:2px;background:var(--amber);margin-top:14px}
+h1{font-size:clamp(30px,7.2vw,44px);line-height:1.12;letter-spacing:-.6px;font-weight:400;max-width:17ch;margin:0 0 18px}
+header p{font-size:16px;color:var(--on-navy);max-width:58ch;line-height:1.62}
+header p.lede{margin-top:20px;padding-top:18px;border-top:1px solid rgba(200,210,228,.28);color:#fff;font-weight:500}
+
+/* ---------- score bar: the hero ---------- */
+.scorebar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line)}
+.scorebar.stuck{box-shadow:0 1px 0 rgba(31,56,100,.10),0 6px 14px -10px rgba(31,56,100,.5)}
+.sb{max-width:660px;margin:0 auto;padding:12px 20px 12px}
+.sbtop{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.n{font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1;font-size:40px;line-height:1;font-weight:700;color:var(--navy);letter-spacing:-1.8px;display:flex;align-items:baseline;gap:4px}
+#sc{display:inline-block;transform-origin:50% 90%}
+#sc.pop{animation:thunk 180ms cubic-bezier(.2,.9,.3,1)}
+@keyframes thunk{0%{transform:translateY(-2px) scale(1.07)}100%{transform:none}}
+.n .of{font-size:14px;font-weight:500;color:var(--muted);letter-spacing:-.2px}
+.band{font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--navy);text-align:right}
+.track{margin-top:11px;height:8px;background:var(--line);border-radius:1px;overflow:hidden}
+.track>i{display:block;height:100%;width:0;background:var(--amber);border-radius:1px;transition:width 280ms cubic-bezier(.16,1,.3,1)}
+/* Row three always occupies its space — it swaps a hint for a jump link
+   rather than appearing, so nothing shifts on the first tick. */
+.sbcta{display:flex;justify-content:flex-end;align-items:center;min-height:22px;margin-top:6px}
+.sbcta .hint{font-size:12px;color:var(--muted)}
+.jump{background:none;border:0;padding:2px 0;width:auto;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--navy);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.jump:hover{color:var(--blue)}
+.jump:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:2px}
+
+/* ---------- sheets ---------- */
+.card{background:#fff;border:1px solid var(--line);padding:28px 20px;margin-top:24px}
+.card:first-child{margin-top:28px}
+.sect{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px}
+.card h2{font-size:22px;color:var(--navy);letter-spacing:-.4px;line-height:1.25;font-weight:500;margin-bottom:8px}
+.card .why{font-size:15px;color:var(--muted);line-height:1.62;max-width:56ch}
+.items{margin-top:22px;border-bottom:1px solid var(--line-soft)}
+
+/* ---------- checklist rows: a form, not a quiz ---------- */
+.item{position:relative;display:flex;gap:14px;align-items:flex-start;padding:16px 14px 16px 16px;margin:0 -14px 0 -16px;border-top:1px solid var(--line-soft);cursor:pointer;transition:background 140ms ease}
+.item::before{content:"";position:absolute;left:0;top:-1px;bottom:0;width:3px;background:transparent;transition:background 140ms ease}
+.item:hover{background:#F6F8FC}
+.item.on{background:var(--tint)}
+.item.on::before{background:var(--navy)}
+.item:focus-within{outline:2px solid var(--blue);outline-offset:-2px;background:#fff}
+.item.on:focus-within{background:var(--tint)}
+.item input{appearance:none;-webkit-appearance:none;flex:none;width:20px;height:20px;margin-top:2px;border:1px solid #93A0BA;border-radius:3px;background:#fff;cursor:pointer;position:relative;transition:background 140ms ease,border-color 140ms ease}
+.item input:checked{background:var(--navy);border-color:var(--navy)}
+.item input:checked::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(43deg)}
+.item .t{font-size:15.5px;line-height:1.45;color:var(--ink);font-weight:400}
+.item .t small{display:block;color:var(--muted);font-size:13px;line-height:1.55;margin-top:5px;font-weight:400}
+
+/* ---------- inputs ---------- */
+label.fl{display:block;font-size:13px;font-weight:500;color:var(--navy);letter-spacing:.2px;margin-bottom:7px}
+select,input[type=email]{width:100%;padding:13px;font-size:16px;line-height:1.3;color:var(--ink);border:1px solid var(--line);border-radius:3px;font-family:inherit;margin-bottom:18px;background:#fff}
+select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%231F3864' stroke-width='1.8'/></svg>");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+select:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+select:focus,input:focus{border-color:var(--blue)}
+.sub{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:10px}
+.sub a{color:var(--blue)}
+
+/* ---------- buttons ---------- */
+button{font-family:inherit;font-size:16px;font-weight:500;border:1px solid transparent;border-radius:3px;padding:15px 22px;cursor:pointer;width:100%;line-height:1.25;transition:background 140ms ease,border-color 140ms ease}
+button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.go{background:var(--navy);color:#fff;border-color:var(--navy);margin-top:6px}
+.go:hover{background:var(--navy-deep);border-color:var(--navy-deep)}
+.go:disabled{background:#626E88;border-color:#626E88;cursor:not-allowed}
+.share{background:#fff;border-color:var(--navy);color:var(--navy)}
+.share:hover{background:var(--tint)}
+a.walink{display:block;margin-top:10px;text-align:center;text-decoration:none;font-size:16px;font-weight:500;line-height:1.25;padding:15px 22px;border:1px solid var(--navy);border-radius:3px}
+a.walink:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.status{font-size:13px;line-height:1.6;margin-top:10px;color:var(--muted)}
+.status.err{color:#A3261F}
+
+/* ---------- result: a document ---------- */
+#result{display:none}
+#result:focus{outline:none}
+.bandbig{background:var(--navy);color:#fff;padding:26px 22px;margin:0 -20px 20px}
+.bandbig .k{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;font-weight:700;color:var(--on-navy-dim);margin-bottom:12px}
+.bandbig .v{font-size:26px;font-weight:500;color:var(--amber);letter-spacing:-.5px;line-height:1.2;display:flex;flex-wrap:wrap;align-items:baseline;gap:9px}
+.bandbig .v .sep{font-weight:400}
+.bandbig .v #bandscore{font-size:23px;font-weight:700;letter-spacing:-.7px;font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+.bandbig p{font-size:15px;color:var(--on-navy);margin-top:14px;line-height:1.62;max-width:52ch}
+.fix{background:var(--amber);color:var(--navy);padding:24px 22px;margin:0 -20px 22px}
+.fix .k{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;font-weight:700;margin-bottom:12px;color:var(--navy)}
+.fix p{font-size:19px;font-weight:500;line-height:1.45;letter-spacing:-.2px;max-width:44ch}
+/* Navy-outlined, not amber — the fix card stays the single accent per view. */
+.offer{display:none;border:2px solid var(--navy);padding:22px 20px;margin-bottom:24px}
+.offer .k{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;font-weight:700;color:var(--navy);margin-bottom:10px}
+.offer h3{font-size:19px;font-weight:500;color:var(--navy);letter-spacing:-.3px;line-height:1.3;margin-bottom:8px}
+.offer p{font-size:14.5px;color:var(--muted);line-height:1.62;margin-bottom:16px;max-width:50ch}
+.offer .terms{font-size:12.5px;color:var(--muted);margin-top:10px;font-variant-numeric:tabular-nums lining-nums}
+.divide{border-top:1px solid var(--line-soft);margin:26px 0 22px}
+.note{font-size:13px;color:var(--muted);margin-top:22px;padding-top:18px;border-top:1px solid var(--line-soft);line-height:1.65}
+.note a{color:var(--blue)}
+.stamp{display:block;margin-top:10px;font-size:11px;letter-spacing:1.8px;text-transform:uppercase;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums lining-nums}
+#capture{margin-bottom:4px}
+
+@media (min-width:600px){
+  header{padding:60px 20px 52px}
+  .card{padding:34px 32px}
+  .item{margin-left:-24px;margin-right:-24px;padding-left:24px;padding-right:24px}
+  .bandbig,.fix{margin-left:-32px;margin-right:-32px;padding-left:32px;padding-right:32px}
+  .sb{padding:14px 20px 14px}
+  .n{font-size:48px;letter-spacing:-2.2px}
+  .band{font-size:12px;letter-spacing:1.6px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hin">
+    <div class="brand">The Findable Candidate</div>
+    <h1>Can recruiters actually find you?</h1>
+    <p>Recruiters don't browse LinkedIn. They search it, with filters — title, skills, location. If your profile is missing the words they type, you never show up. No rejection email. Just silence.</p>
+    <p class="lede">Tick what's true for you. Your score updates as you go.</p>
+  </div>
+</header>
+
+<div class="scorebar" id="scorebar">
+  <div class="sb">
+    <div class="sbtop">
+      <div class="n"><span id="sc">0</span><span class="of">/100</span></div>
+      <div class="band" id="bandlive">—</div>
+    </div>
+    <div class="track"><i id="bar"></i></div>
+    <div class="sbcta">
+      <span class="hint" id="sbhint">Tick what's true for you</span>
+      <button type="button" class="jump" id="sbjump" hidden onclick="jump()">See what to fix first ↓</button>
+    </div>
+  </div>
+</div>
+<p class="sr-only" id="live" aria-live="polite" aria-atomic="true"></p>
+
+<div class="wrap">
+
+  <div class="card">
+    <div class="sect">Part one</div>
+    <h2>The search test</h2>
+    <p class="why">These are the fields a recruiter's filters actually read. Empty field, no match. It's that blunt.</p>
+    <div class="items" id="g1"></div>
+  </div>
+
+  <div class="card">
+    <div class="sect">Part two</div>
+    <h2>The Google test</h2>
+    <p class="why">AI tools and search engines answer questions about you from the open web. Not from inside LinkedIn — from what anyone can see.</p>
+    <div class="items" id="g2"></div>
+  </div>
+
+  <div class="card">
+    <div class="sect">Part three</div>
+    <h2>The proof test</h2>
+    <p class="why">A claim only you make is weak. A claim someone else published about you carries weight — with people and with machines.</p>
+    <div class="items" id="g3"></div>
+  </div>
+
+  <div class="card">
+    <h2>Done ticking?</h2>
+    <p class="why" style="margin-bottom:22px">Your score is at the top of the screen. Here's what to do about it — the one thing to fix first, based on what you left unticked.</p>
+    <button class="go" id="see" onclick="reveal()">Show me what to fix first</button>
+  </div>
+
+  <div class="card" id="result" tabindex="-1">
+    <div class="bandbig">
+      <div class="k">Your findability</div>
+      <div class="v"><span id="bandname"></span><span class="sep" aria-hidden="true">·</span><span id="bandscore"></span></div>
+      <p id="bandmean"></p>
+    </div>
+    <div class="fix">
+      <div class="k">Fix this first — tonight</div>
+      <p id="fixtext"></p>
+    </div>
+
+    <div class="offer" id="offer">
+      <div class="k" id="offerk">The next step</div>
+      <h3 id="offerh"></h3>
+      <p>This scored what you told us. The Candidate File runs the search a recruiter would actually run for your role — and tells you if you came up, where you ranked, and which filter kept you out.</p>
+      <button class="go" id="orderbtn" onclick="order()">Order the Candidate File</button>
+      <p class="terms" id="offerterms"></p>
+    </div>
+
+    <div id="capture">
+      <div class="divide"></div>
+      <label class="fl" for="sen">The level you're going for</label>
+      <select id="sen"><option value="">Choose…</option><option>Individual contributor</option><option>Manager</option><option>Head of / Director</option><option>VP or above</option></select>
+      <label class="fl" for="stage">How long you've been looking</label>
+      <select id="stage"><option value="">Choose…</option><option>Not yet — getting ready</option><option>Just started</option><option>1–3 months</option><option>3–6 months</option><option>6+ months</option></select>
+      <label class="fl" for="em">Want the full fix list, in order?</label>
+      <input type="email" id="em" placeholder="you@example.com" autocomplete="email" oninput="ve()">
+      <button class="go" id="send" disabled onclick="sendit()">Email me my fix list</button>
+      <p class="status" id="sendstatus">One email with your fix list, ordered for you. No course, no webinar. Unsubscribe any time.</p>
+    </div>
+
+    <div class="divide"></div>
+    <button class="share" id="sharebtn" onclick="shareIt()">Share the checklist (not your score)</button>
+    <a class="share walink" id="walink" target="_blank" rel="noopener">Send it on WhatsApp</a>
+    <p class="status" id="sharestatus">Sends the tool, never your number. Share it and you skip the queue when you order your File — 48 hours' priority.</p>
+
+    <p class="note">This is a self-check — it scores what you tell it. The paid Candidate File is different: we run the actual search a recruiter would run for your role and tell you if you came up, where you ranked, and which filter kept you out. Your email, our <a href="/privacy">privacy notice</a>; the File carries a 7-day no-questions <a href="/terms">refund</a>. <span class="stamp" id="stamp">Checklist v2 · Aug 2026</span></p>
+  </div>
+
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   CONFIG — paste the live URLs here. Nothing else needs editing.
+   Leave a value empty and the feature stays off rather than failing
+   silently: an empty webhook will NOT tell the user their email was sent.
+   ════════════════════════════════════════════════════════════════════ */
+var CONFIG = {
+  webhook:      "https://lloop.app.n8n.cloud/webhook/checklist-capture",  // n8n WF-A "Checklist capture" production
+  orderPre:     "https://buy.stripe.com/00w00i3MWfMu11x9g76g801",  // File — National Day pre-order S$9.80
+  orderList:    "https://buy.stripe.com/aFa3cu3MW8k29y30JB6g802",  // File — S$28 list (surfaces 11 Aug)
+  shareUrl:     "https://thefindablecandidate.com/shared",  // dedicated path so peer shares attribute separately from written content
+  preorderEnds: "2026-08-10",                               // inclusive. After this date the page shows list price by itself.
+  beacon:       false                                       // abandonment tracking. Leave OFF until WF-A branches on
+                                                            // event === "abandoned"; otherwise partial rows hit the
+                                                            // beehiiv upsert with an empty email. Flip to true after.
+};
+
+/* All state in memory. No storage APIs. */
+var ITEMS=[
+ /* [group, key, points, label, sub, fix (if-then: cue + response), priority] */
+ [1,"head",18,"My headline contains the exact job title I want next","Word for word. “Marketing leader | Storyteller” doesn't match a filter for “Head of Marketing”.","Tonight, before you close your laptop: open your LinkedIn headline and put your exact target title at the front of it.",1],
+ [1,"vis",6,"My public profile is switched on","Settings → Visibility → Public profile. If it's off, search engines can't see you at all.","Next time you open LinkedIn on a laptop: go to Settings → Visibility → Public profile and switch it on before you do anything else.",2],
+ [1,"skills",8,"I've listed 10 or more skills — including the ones recruiters filter on","Not just your favourites. The ones that appear in job ads for your target role.","Before you send your next application: open that job ad beside your profile and add every skill it names that you actually have.",3],
+ [1,"about",6,"My About section exists and names the role I'm going for","Three plain sentences beat three paragraphs of adjectives.","Tonight, before bed: write three plain sentences in your About — what you do, who you've done it for, and the role you want next.",4],
+ [1,"titles",6,"Every job in my experience section has a title the market would recognise","Internal titles like “Squad Lead — Pod 7” match nothing.","Next time you're on your profile: rename any internal or quirky job title to the one the rest of the market uses for that work.",5],
+ [1,"fresh",6,"I've edited my profile in the last 30 days","Recruiters can filter to people the platform reads as active. A stale profile drops out of that list.","Before you close LinkedIn today: make one visible edit — headline, skill, anything — so you stay inside the active-talent filter recruiters can switch on.",6],
+ [1,"loc",5,"My location is set to the market I want to work in","Recruiters filter by location before almost anything else.","Right now, while you're thinking about it: set your location to the market you're targeting, not the one you happen to be sitting in.",7],
+ [1,"open",5,"I've turned on open-to-work — at least the recruiters-only version","There's a private version only recruiters can see. LinkedIn hides it from your current employer — best-effort, not guaranteed.","Tonight: turn on open-to-work, recruiters-only version. It's free, and it puts you in a filter recruiters actively search on.",8],
+ [2,"google",12,"When I Google my name in a private window, most of page one is me","Not LinkedIn's search box — Google. Logged out. That's what the machines see.","Before you send your next application: open a private window and Google your own name. Whatever isn't you on page one is your next fix.",9],
+ [2,"home",12,"There's a page about me on the open web that isn't a social profile","A simple site, a company bio, a speaker page. Test: can you select the text with your cursor?","This weekend, in one sitting: put up a single page that isn't a social profile — your name, your target role, and three things you've done.",10],
+ [2,"same",6,"I use the same name and photo everywhere","If you're three different names across four platforms, machines can't tell you're one person.","Next time you're on any of your profiles: pick one version of your name and one photo, and make every platform match.",12],
+ [3,"proof",10,"At least two public things carry my name","A talk, an article, public code, a portfolio, a press mention, a real recommendation.","This week, message one person who's seen your work: ask for a LinkedIn recommendation that names the skill you want to be found for.",11]
+];
+var checked={}, startedAt=Date.now(), revealedAt=null, didShare=false;
+
+/* ---- source attribution: explicit param > landing path > referrer ---- */
+var SOURCE=(function(){
+  var q=new URLSearchParams(location.search);
+  var explicit=q.get("s")||q.get("utm_source");
+  if(explicit) return explicit.slice(0,40);
+  var map={check:"video",li:"linkedin",tt:"tiktok",fb:"facebook",ig:"instagram",yt:"youtube",checklist:"written",shared:"peer-share"};
+  var seg=location.pathname.replace(/^\/|\/$/g,"").split("/").pop().toLowerCase();
+  if(map[seg]) return map[seg];
+  if(document.referrer){ try{ return "ref:"+new URL(document.referrer).hostname.replace(/^www\./,""); }catch(e){} }
+  return "direct";
+})();
+
+function build(){
+  [1,2,3].forEach(function(g){
+    var host=document.getElementById("g"+g);
+    ITEMS.filter(function(x){return x[0]===g}).forEach(function(x){
+      var l=document.createElement("label"); l.className="item";
+      var i=document.createElement("input"); i.type="checkbox";
+      i.onchange=function(){ checked[x[1]]=i.checked; l.classList.toggle("on",i.checked); tally(); };
+      var t=document.createElement("div"); t.className="t"; t.textContent=x[3];
+      var s=document.createElement("small"); s.textContent=x[4]; t.appendChild(s);
+      l.appendChild(i); l.appendChild(t); host.appendChild(l);
+    });
+  });
+}
+build();
+function score(){ var s=0; ITEMS.forEach(function(x){ if(checked[x[1]])s+=x[2]; }); return s; }
+function ticked(){ var n=0; ITEMS.forEach(function(x){ if(checked[x[1]])n++; }); return n; }
+function bandOf(s){
+  return s<=24?["Zero-Result Candidate","Right now, the search a recruiter would run for your role almost certainly doesn't return you. That's not a verdict on you — it's a list of empty fields. Every one of them is editable."]
+   : s<=44?["Near Miss","You're in the database, but at least one hard filter is knocking you out before anyone sees you. Usually it's one field."]
+   : s<=64?["Half-Findable","Some searches return you. Probably not the one that matters. The gaps left are specific and fixable."]
+   : s<=84?["Findable","You'd come back for most searches in your lane. What's left is the difference between appearing and being chosen from the list."]
+   : ["Cited","Strong. Machines can find you, tell you apart, and back you up. The next question is what they say — that's what the File checks."];
+}
+/* --- weighted score counter: 280ms, ease-out, tabular digits --- */
+var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var raf=null, shown=0, liveTimer=null;
+function paintScore(target){
+  var el=document.getElementById("sc");
+  if(raf){ cancelAnimationFrame(raf); raf=null; }
+  if(REDUCED || !window.requestAnimationFrame){ shown=target; el.textContent=target; return; }
+  el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
+  var from=shown, delta=target-from, t0=null, D=280;
+  function step(ts){
+    if(t0===null) t0=ts;
+    var p=(ts-t0)/D; if(p>1)p=1;
+    var e=1-Math.pow(1-p,4);
+    shown=from+delta*e;
+    el.textContent=Math.round(shown);
+    if(p<1){ raf=requestAnimationFrame(step); } else { shown=target; el.textContent=target; raf=null; }
+  }
+  raf=requestAnimationFrame(step);
+}
+function tally(){
+  var s=score(), b=bandOf(s)[0];
+  paintScore(s);
+  document.getElementById("bar").style.width=s+"%";
+  document.getElementById("bandlive").textContent=b;
+  /* sticky-bar jump link appears once there's something to see */
+  var on=ticked()>0;
+  document.getElementById("sbhint").hidden=on;
+  document.getElementById("sbjump").hidden=!on;
+  /* announce once the number settles, not on every frame */
+  if(liveTimer) clearTimeout(liveTimer);
+  liveTimer=setTimeout(function(){
+    document.getElementById("live").textContent="Score "+s+" out of 100. "+b+".";
+  },500);
+}
+/* The score bar is sticky, so a plain scrollIntoView parks the target
+   underneath it. Measure the bar and offset by it, so the candidate always
+   lands on the band block with the fix and the offer following it. */
+function landOn(el){
+  var sb=document.getElementById("scorebar");
+  el.style.scrollMarginTop=((sb?sb.offsetHeight:0)+14)+"px";
+  el.scrollIntoView({behavior:REDUCED?"auto":"smooth",block:"start"});
+}
+function jump(){
+  var r=document.getElementById("result");
+  if(r.style.display==="block"){ landOn(r); return; }
+  var card=document.getElementById("see").closest(".card");
+  landOn(card);
+  document.getElementById("see").focus({preventScroll:true});
+}
+function reveal(){
+  var s=score(), b=bandOf(s);
+  revealedAt=Date.now();
+  document.getElementById("bandname").textContent=b[0];
+  document.getElementById("bandscore").textContent=s+"/100";
+  document.getElementById("bandmean").textContent=b[1];
+  var missed=ITEMS.filter(function(x){return !checked[x[1]]}).sort(function(a,b){return a[6]-b[6]});
+  document.getElementById("fixtext").textContent = missed.length? missed[0][5]
+    : "Nothing on this list. Genuinely rare. The next question is what the actual search returns — and that's exactly what the Candidate File checks.";
+  paintOffer();
+  var r=document.getElementById("result");
+  r.style.display="block";
+  landOn(r);
+  r.focus({preventScroll:true});
+}
+/* The pre-order block expires by itself on the printed date.
+   A deadline that slides is fake scarcity — so the page enforces it. */
+function paintOffer(){
+  var pre = new Date().toISOString().slice(0,10) <= CONFIG.preorderEnds;
+  var url = pre ? (CONFIG.orderPre||CONFIG.orderList) : CONFIG.orderList;
+  if(!url) return;                        /* no link configured → no dead button */
+  document.getElementById("offerk").textContent   = pre? "Pre-order · closes 10 August" : "The next step";
+  document.getElementById("offerh").textContent   = pre? "The Candidate File — S$9.80" : "The Candidate File — S$28";
+  document.getElementById("offerterms").textContent = pre
+    ? "First 20 only · delivered by 22 August · S$28 from 11 August"
+    : "Delivered by email · 7-day no-questions refund";
+  document.getElementById("orderbtn").textContent = pre? "Pre-order the File — S$9.80" : "Order the File — S$28";
+  document.getElementById("offer").style.display="block";
+}
+function order(){
+  var pre = new Date().toISOString().slice(0,10) <= CONFIG.preorderEnds;
+  var url = pre ? (CONFIG.orderPre||CONFIG.orderList) : CONFIG.orderList;
+  if(url) window.open(url,"_blank","noopener");
+}
+function ve(){ document.getElementById("send").disabled=!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(document.getElementById("em").value.trim()); }
+function payload(){
+  return {
+    email:document.getElementById("em").value.trim(),
+    score:score(), band:bandOf(score())[0],
+    checked:checked,
+    seniority:document.getElementById("sen").value,
+    stage:document.getElementById("stage").value,
+    tool:"findability-checklist-v2",
+    submittedAt:new Date().toISOString(),   /* WF-A validates for this — do not remove */
+    source:SOURCE,
+    items_ticked:ticked(),
+    time_to_complete_s:Math.round((Date.now()-startedAt)/1000),
+    time_to_reveal_s:revealedAt?Math.round((revealedAt-startedAt)/1000):null,
+    shared:didShare
+  };
+}
+function sendit(){
+  var btn=document.getElementById("send"), st=document.getElementById("sendstatus");
+  if(!CONFIG.webhook){
+    st.className="status err";
+    st.textContent="Not connected yet — CONFIG.webhook is empty. Nothing was sent.";
+    console.warn("Checklist: CONFIG.webhook not set. Payload was:",payload());
+    return;
+  }
+  btn.disabled=true; btn.textContent="Sending…"; st.className="status"; st.textContent="Sending…";
+  /* No keepalive here. It's for requests that must survive page unload, and it
+     carries its own limits and quirks — the only material difference between
+     this call and a plain console fetch that succeeds. The unload beacon uses
+     sendBeacon instead, which is the right tool for that job. */
+  fetch(CONFIG.webhook,{
+    method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(payload())
+  }).then(function(r){
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return r.text();
+  }).then(function(t){
+    /* A 200 is not proof of acceptance — these workflows answer 200 to
+       everything so upstream senders don't retry, then say in the body
+       whether they took it. {"ok":false} or {"ignored":true} means discarded. */
+    var j=null; try{ j=JSON.parse(t); }catch(e){}
+    if(j && (j.ok===false || j.ignored===true)) throw new Error("rejected by workflow: "+t);
+    /* Deliberately does not say "check your inbox" — the welcome sequence
+       isn't live yet, and a promise the system can't keep is the one thing
+       this brand can't afford. Restore the timing language once Sequence A
+       is sending. */
+    btn.textContent="You're on the list";
+    st.textContent="I'll send your full fix list, in order, to that address. In the meantime the one above is the one that moves things tonight.";
+  }).catch(function(e){
+    btn.disabled=false; btn.textContent="Try again";
+    st.className="status err";
+    st.textContent="That didn't go through. Try once more — your answers are still here.";
+    console.error("Checklist send failed:",e);
+  });
+}
+var SHARETXT="I just ran the Findability Checklist — it shows you whether recruiter searches can actually find you, and what to fix first. Three minutes, free: "+CONFIG.shareUrl;
+/* wa.me is a deterministic path that doesn't depend on the OS share sheet.
+   On desktop the native sheet hands off to the installed WhatsApp app, which
+   can fail on its own — this link goes to WhatsApp Web instead. */
+document.getElementById("walink").href="https://wa.me/?text="+encodeURIComponent(SHARETXT);
+document.getElementById("walink").addEventListener("click",function(){ didShare=true; banked(); });
+function banked(){
+  var st=document.getElementById("sharestatus");
+  st.className="status";
+  st.textContent="That's your 48-hour queue priority banked. Order the File any time and you skip the batch.";
+}
+function shareIt(){
+  var st=document.getElementById("sharestatus");
+  didShare=true;
+  /* Native share only where it's actually good — a touch device, where it
+     offers every messaging app. On desktop it routes through the OS and can
+     die in whatever app it picks, so copy to clipboard instead. */
+  var touch = window.matchMedia && window.matchMedia("(any-pointer: coarse)").matches;
+  if(navigator.share && touch){
+    navigator.share({text:SHARETXT}).then(banked).catch(function(){});
+    return;
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(SHARETXT).then(function(){
+      st.className="status";
+      st.textContent="Copied — paste it anywhere. That's your 48-hour queue priority banked.";
+    }).catch(fallback);
+  } else { fallback(); }
+  function fallback(){
+    /* Last resort: select the text so they can copy it by hand. */
+    st.className="status";
+    st.innerHTML="Copy this link: <b>"+CONFIG.shareUrl+"</b>";
+  }
+}
+/* elevation only once the bar is actually pinned */
+(function(){
+  var sb=document.getElementById("scorebar");
+  if(!sb || !("IntersectionObserver" in window)) return;
+  var sentinel=document.createElement("div");
+  sentinel.style.cssText="position:absolute;top:0;height:1px;width:1px";
+  sb.parentNode.insertBefore(sentinel,sb);
+  new IntersectionObserver(function(e){ sb.classList.toggle("stuck",!e[0].isIntersecting); },{threshold:0}).observe(sentinel);
+})();
+/* abandonment beacon — no library, no cookies, no third party */
+window.addEventListener("pagehide",function(){
+  if(!CONFIG.beacon || !CONFIG.webhook || !navigator.sendBeacon) return;
+  if(!ticked()) return;                                   /* never touched it — nothing to learn */
+  if(document.getElementById("send").textContent.indexOf("Sent")===0) return;  /* already captured */
+  var p=payload(); p.email=""; p.event="abandoned"; p.revealed=!!revealedAt;
+  try{ navigator.sendBeacon(CONFIG.webhook,new Blob([JSON.stringify(p)],{type:"application/json"})); }catch(e){}
+});
+</script>
+</body>
+</html>

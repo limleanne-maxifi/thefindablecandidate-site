@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Candidate File — I'll run the search a recruiter runs</title>
+<style>
+:root{
+  --navy:#1F3864; --amber:#E8B33C; --off:#F8F9FA; --blue:#2E6FD8;
+  --ink:#12192b; --muted:#5c6780; --line:#e2e6ee; --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink); background:var(--white); line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.mono{font-variant-numeric:tabular-nums lining-nums}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.narrow{max-width:620px;margin:0 auto;padding:0 24px}
+
+/* nav */
+nav{border-bottom:1px solid var(--line);padding:18px 0;position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);z-index:20}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.logo{font-weight:700;font-size:16px;color:var(--navy);letter-spacing:-.2px}
+.logo span{display:block;font-weight:400;font-size:11px;color:var(--muted);letter-spacing:.3px}
+.navcta{background:var(--navy);color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:10px 18px;border-radius:8px;white-space:nowrap}
+
+/* hero */
+.hero{padding:52px 0 40px;text-align:center}
+.eyebrow{display:inline-block;font-size:12px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--blue);background:#eaf0fd;padding:7px 14px;border-radius:20px;margin-bottom:26px}
+h1{font-size:clamp(34px,6vw,60px);line-height:1.06;letter-spacing:-1.4px;color:var(--navy);font-weight:800;margin-bottom:22px}
+h1 em{font-style:italic;color:var(--amber);font-weight:800}
+.sub{font-size:clamp(17px,2.2vw,20px);color:var(--muted);max-width:620px;margin:0 auto 34px;line-height:1.6}
+.btn{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;font-size:17px;font-weight:600;padding:16px 34px;border-radius:10px;border:none;cursor:pointer;font-family:inherit}
+.btn:hover{background:#16294a}
+.btn:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.btn.amber{background:var(--amber);color:var(--navy)}
+.btn.amber:hover{background:#d9a42d}
+.microcopy{font-size:13.5px;color:var(--muted);margin-top:16px}
+
+/* paid banner — shown only when arriving from Stripe */
+.paid{display:none;background:var(--amber);color:var(--navy);padding:16px 0}
+.paid .wrap{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.paid b{font-size:15px}
+.paid span{font-size:14px}
+
+/* stats */
+.stats{background:var(--navy);color:var(--off);padding:64px 0;margin:24px 0 0}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;text-align:center}
+.stat .n{font-size:clamp(38px,6vw,60px);font-weight:800;color:var(--amber);letter-spacing:-2px;line-height:1}
+.stat .l{font-size:14.5px;opacity:.86;margin-top:12px;line-height:1.45}
+.statnote{text-align:center;font-size:12.5px;opacity:.55;margin-top:34px}
+
+/* sections */
+section.pad{padding:76px 0}
+.kicker{font-size:12px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+h2{font-size:clamp(26px,4vw,38px);line-height:1.14;letter-spacing:-.9px;color:var(--navy);font-weight:800;margin-bottom:18px}
+.body{font-size:17px;color:var(--muted);max-width:640px;line-height:1.65}
+.body+.body{margin-top:14px}
+.body b{color:var(--ink)}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+.card{background:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:28px 24px}
+.card .num{font-size:13px;font-weight:700;color:var(--amber);letter-spacing:1px;margin-bottom:12px}
+.card h3{font-size:18px;color:var(--navy);margin-bottom:9px;letter-spacing:-.3px}
+.card p{font-size:14.5px;color:var(--muted);line-height:1.6}
+
+/* sample finding */
+.sample{background:var(--off);border-left:4px solid var(--amber);border-radius:0 12px 12px 0;padding:26px 28px;margin-top:36px}
+.sample .lab{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:600}
+.sample p{font-size:16px;line-height:1.65;color:var(--ink)}
+.sample .hl{background:#fdf1d4;padding:1px 4px;border-radius:3px;font-weight:600}
+
+/* form */
+#apply{background:var(--off);border-top:1px solid var(--line)}
+.gatecard{background:var(--white);border:1.5px solid var(--navy);border-radius:16px;padding:30px 26px;text-align:left}
+.gatecard .btn{display:block;text-align:center}
+.microcopy a{color:var(--blue)}
+.formcard{background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:34px 28px;margin-top:34px}
+.prog{height:5px;background:var(--line);border-radius:3px;margin-bottom:8px;overflow:hidden}
+.prog>i{display:block;height:100%;width:0;background:var(--amber);transition:width .25s ease;border-radius:3px}
+.progl{font-size:12px;color:var(--muted);margin-bottom:26px}
+.fstep{display:none}.fstep.on{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fstep h3{font-size:22px;color:var(--navy);letter-spacing:-.4px;margin-bottom:8px}
+.fstep .hint{font-size:14px;color:var(--muted);margin-bottom:22px;line-height:1.55}
+label.fl{display:block;font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:7px}
+label.fl small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
+input[type=text],input[type=url],input[type=email],select{
+  width:100%;padding:13px 14px;font-size:16px;border:1.5px solid var(--line);border-radius:9px;
+  background:var(--white);color:var(--ink);font-family:inherit;margin-bottom:20px
+}
+input:focus,select:focus{outline:3px solid var(--blue);outline-offset:1px;border-color:var(--navy)}
+.radios{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+label.r{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px;cursor:pointer;font-size:15px;background:var(--white)}
+label.r.on{border-color:var(--navy);background:#eef2fa}
+label.r input{margin-top:3px;accent-color:var(--navy);width:17px;height:17px;flex:none}
+label.r:focus-within{outline:3px solid var(--blue);outline-offset:1px}
+.consent{display:flex;gap:11px;align-items:flex-start;padding:14px 15px;border:1.5px solid var(--line);border-radius:9px;cursor:pointer;font-size:14.5px;line-height:1.5;background:var(--white);margin-bottom:20px}
+.consent.on{border-color:var(--navy);background:#eef2fa}
+.consent input{margin-top:3px;accent-color:var(--navy);width:17px;height:17px;flex:none}
+.consent:focus-within{outline:3px solid var(--blue);outline-offset:1px}
+.nav2{display:flex;gap:10px;align-items:center;margin-top:6px}
+.nav2 .next{flex:1}
+.back{background:none;border:none;color:var(--muted);font-size:15px;font-weight:500;padding:14px 8px;cursor:pointer;font-family:inherit}
+.back:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.next{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:15px 24px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit}
+button.next.amberbtn{background:var(--amber);color:var(--navy)}
+button.next.amberbtn:hover{background:#d9a42d}
+button.next:disabled{opacity:.4;cursor:not-allowed}
+.status{font-size:13.5px;color:var(--muted);line-height:1.6;margin-top:12px}
+.status.err{color:#A3261F}
+
+/* confirm */
+.confirm{text-align:center;padding:10px 0}
+.tick{width:56px;height:56px;border-radius:50%;background:var(--amber);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin:0 auto 22px}
+.queue{background:var(--navy);color:var(--off);border-radius:12px;padding:22px;margin:24px 0;text-align:left}
+.queue .k{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;opacity:.65;margin-bottom:6px}
+.queue .v{font-size:19px;font-weight:700;color:var(--amber);line-height:1.3}
+.queue hr{border:none;border-top:1px solid rgba(255,255,255,.16);margin:16px 0}
+
+/* method */
+.method{background:var(--navy);color:var(--off);padding:64px 0}
+.method h2{color:var(--off)}
+.method .body{color:rgba(248,249,250,.82)}
+.method .body b{color:var(--amber)}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:34px}
+.mcard{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:22px}
+.mcard h4{font-size:15px;color:var(--amber);margin-bottom:8px}
+.mcard p{font-size:14px;color:rgba(248,249,250,.8);line-height:1.6}
+
+footer{padding:44px 0;border-top:1px solid var(--line);font-size:13px;color:var(--muted);text-align:center}
+footer b{color:var(--ink)}
+
+@media(max-width:760px){
+  .statgrid,.steps,.mgrid{grid-template-columns:1fr}
+  .statgrid{gap:32px}
+  .hero{padding:56px 0 44px}
+  section.pad{padding:56px 0}
+  .formcard{padding:26px 20px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">The Candidate File<span>The Findable Candidate · Maxifi Digital</span></div>
+    <a href="#apply" class="navcta">Request a search</a>
+  </div>
+</nav>
+
+<div class="paid" id="paidbanner">
+  <div class="wrap">
+    <b>Payment received — thank you.</b>
+    <span>One more step: the search can't run without the details below. Three minutes.</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow" id="eyebrow">The Candidate File · intake</span>
+    <h1 id="h1">Tell me the role, and I'll run the search.</h1>
+    <p class="sub" id="sub">Five short screens. The more exact you are about the role, the more exact the search — and the more useful the answer.</p>
+  </div>
+</header>
+
+<!-- GATE — shown when there's no Stripe session, i.e. we can't see an order -->
+<section class="pad" id="gate" style="display:none">
+  <div class="narrow">
+    <div class="gatecard">
+      <div class="kicker">Before the form</div>
+      <h2 style="margin-bottom:14px">This is the intake for the Candidate File.</h2>
+      <p class="body">The File is a paid search — I run it by hand in a LinkedIn Recruiter seat and report what came back. If you haven't ordered yet, start there.</p>
+      <a class="btn amber" href="/file" style="margin-top:22px">See the Candidate File</a>
+      <p class="microcopy" style="margin-top:18px">Already ordered and came back later, or lost the link in your receipt? <a href="#" id="already">Take me to the form</a> — I'll match it to your payment by email.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="pad" id="apply" style="display:none">
+  <div class="narrow">
+    <div class="kicker">Request a search</div>
+    <h2>What role should I search for?</h2>
+    <p class="body">Five short screens. The more exact you are about the role, the more exact the search — and the more useful the answer.</p>
+
+    <div class="formcard">
+      <div class="prog"><i id="pb"></i></div>
+      <div class="progl" id="pl" aria-live="polite">Step 1 of 5</div>
+
+      <!-- 1 -->
+      <div class="fstep on" id="f1">
+        <h3>The role you want next</h3>
+        <p class="hint">Write the title the way it appears on job ads — that exact string is what a recruiter's title filter matches against.</p>
+        <label class="fl" for="title">Exact target job title</label>
+        <input type="text" id="title" maxlength="90" placeholder="e.g. Head of Corporate Communications" oninput="val()">
+        <label class="fl" for="market">Market <small>City or country you want to work in</small></label>
+        <input type="text" id="market" maxlength="60" placeholder="e.g. Singapore" oninput="val()">
+        <label class="fl" for="sen">Level</label>
+        <select id="sen" onchange="val()">
+          <option value="">Choose…</option>
+          <option value="ic">Individual contributor</option>
+          <option value="mgr">Manager</option>
+          <option value="head">Head of / Director</option>
+          <option value="vp">VP or above</option>
+        </select>
+        <label class="fl" for="ind">Industry</label>
+        <input type="text" id="ind" maxlength="60" placeholder="e.g. Aviation, Public sector, SaaS" oninput="val()">
+        <div class="nav2"><button class="next" id="n1" disabled onclick="go(2)">Next</button></div>
+      </div>
+
+      <!-- 2 -->
+      <div class="fstep" id="f2">
+        <h3>What would they filter on?</h3>
+        <p class="hint">Three to five skills or keywords a recruiter would tick when hiring for that role. Not everything you can do — what <em>they</em> would search for.</p>
+        <label class="fl" for="skills">Skills / keywords <small>Separate with commas</small></label>
+        <input type="text" id="skills" maxlength="160" placeholder="e.g. crisis communications, stakeholder engagement, media relations" oninput="val()">
+        <label class="fl" for="head">Your LinkedIn headline, as it reads right now <small>Copy and paste it. I'll compare it against what the index actually shows.</small></label>
+        <input type="text" id="head" maxlength="220" placeholder="Paste your current headline" oninput="val()">
+        <div class="nav2"><button class="back" onclick="go(1)">Back</button><button class="next" id="n2" disabled onclick="go(3)">Next</button></div>
+      </div>
+
+      <!-- 3 -->
+      <div class="fstep" id="f3">
+        <h3>So I can find you</h3>
+        <p class="hint">Before running the search I look you up by name. If I can find you that way but the role search doesn't return you, that's the whole finding — and it's airtight.</p>
+        <label class="fl" for="name">Full name, as it appears on LinkedIn</label>
+        <input type="text" id="name" maxlength="80" placeholder="Your full name" oninput="val()">
+        <label class="fl" for="url">LinkedIn profile URL</label>
+        <input type="url" id="url" maxlength="160" placeholder="linkedin.com/in/…" oninput="val()">
+        <div class="nav2"><button class="back" onclick="go(2)">Back</button><button class="next" id="n3" disabled onclick="go(4)">Next</button></div>
+      </div>
+
+      <!-- 4 -->
+      <div class="fstep" id="f4">
+        <h3>Two quick checks</h3>
+        <p class="hint">These get verified against what I actually see. Where your answer and the index disagree, that difference goes in your file — it's usually the most useful line in it.</p>
+        <label class="fl">Is your profile set to public visibility?</label>
+        <div class="radios" id="rvis"></div>
+        <label class="fl">Have you turned on "open to work" settings?</label>
+        <div class="radios" id="ropen"></div>
+        <div class="nav2"><button class="back" onclick="go(3)">Back</button><button class="next" id="n4" disabled onclick="go(5)">Next</button></div>
+      </div>
+
+      <!-- 5 -->
+      <div class="fstep" id="f5">
+        <h3>Where should I send it?</h3>
+        <p class="hint">Your file lands by email once your role's search has been run. Two last things so I queue you into the right one.</p>
+        <label class="fl" for="fn">Which function is this role in?</label>
+        <select id="fn" onchange="val()">
+          <option value="">Choose…</option>
+          <option value="comms">Communications / PR / Marketing</option>
+          <option value="tech">Engineering / Data / IT</option>
+          <option value="design">Design / Creative</option>
+          <option value="ops">Operations / Programme / Project</option>
+          <option value="sales">Sales / Business Development</option>
+          <option value="finance">Finance / Legal / Licensed professions</option>
+          <option value="people">HR / People / Talent</option>
+          <option value="general">General management / Other</option>
+        </select>
+        <label class="fl" for="stage">How long have you been searching?</label>
+        <select id="stage" onchange="val()">
+          <option value="">Choose…</option>
+          <option value="not">Not searching yet — getting ready</option>
+          <option value="just">Just started</option>
+          <option value="m13">1–3 months</option>
+          <option value="m36">3–6 months</option>
+          <option value="m6">6+ months</option>
+        </select>
+        <label class="fl" for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" oninput="val()">
+        <label class="consent" id="consentbox" for="consent">
+          <input type="checkbox" id="consent" onchange="val()">
+          <span>I'm asking you to run this search on my profile.</span>
+        </label>
+        <div class="nav2"><button class="back" onclick="go(4)">Back</button><button class="next amberbtn" id="n5" disabled onclick="submitForm()">Request my search</button></div>
+        <p class="status" id="sendstatus">Your details go to me and nowhere else. Nothing is published without asking you first.</p>
+      </div>
+
+      <!-- confirm -->
+      <div class="fstep" id="fdone">
+        <div class="confirm">
+          <div class="tick">✓</div>
+          <h3>You're in the queue.</h3>
+          <p class="hint" style="margin-bottom:0">Searches run in batches by role — everyone chasing the same title, market and level goes into one run. Yours is below.</p>
+        </div>
+        <div class="queue">
+          <div class="k">Your search</div>
+          <div class="v" id="q-arch"></div>
+          <hr>
+          <div class="k">Requested</div>
+          <div class="v mono" id="q-date" style="font-size:16px"></div>
+        </div>
+        <p class="hint">While you wait, one thing worth knowing: a recruiter's search returns exact matches. It doesn't read your profile and judge it — it matches strings against fields, then stops. Most people who never come up aren't underqualified. They're missing a word.</p>
+        <p class="hint"><b>Tonight, before you close your laptop:</b> open your LinkedIn headline field and read it out loud. If the exact title you just typed into this form isn't in there, you've likely found your own answer before I've run anything.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<div class="method">
+  <div class="wrap">
+    <div class="kicker" style="color:var(--amber)">The method</div>
+    <h2>You don't have to trust me. You can check me.</h2>
+    <p class="body">Every file publishes the full query — the exact filters, the tier, the date, the result count. Run it yourself if you want to. <b>A published query can be checked; a claim can only be believed.</b></p>
+    <div class="mgrid">
+      <div class="mcard">
+        <h4>Run manually, in a paid seat</h4>
+        <p>No scraping, no bots, no extraction tools. A person builds the search and runs it, on screen recording, at your request.</p>
+      </div>
+      <div class="mcard">
+        <h4>Scope is always declared</h4>
+        <p>Search tiers see different slices of LinkedIn. Yours states which tier ran it. If you fall outside that tier's reach, you're reported as out of scope — never as absent.</p>
+      </div>
+      <div class="mcard">
+        <h4>One filter at a time</h4>
+        <p>Filters come off one by one until you appear. The first removal that admits you is the thing excluding you. That's a cause, not a guess.</p>
+      </div>
+      <div class="mcard">
+        <h4>What this doesn't claim</h4>
+        <p>It measures whether you get found. Not whether you get hired. Anyone promising the second from a profile edit is selling you something.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="narrow">
+    <b>The Candidate File</b> — from The Findable Candidate, by Maxifi Digital.<br>
+    Method v2.1 · observed search · full protocol published. Other people's profiles are anonymised in everything we publish.
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   CONFIG — paste the live URL here. Nothing else needs editing.
+   Leave it empty and the form will NOT tell anyone they're queued.
+   ════════════════════════════════════════════════════════════════════ */
+var CONFIG = {
+  webhook: "https://lloop.app.n8n.cloud/webhook/file-intake"   // n8n WF-B — intake trigger
+  /* NOT /webhook/stripe-payment. That one is WF-B's Stripe trigger: it answers
+     200 to anything so Stripe won't retry, then returns {"ignored":true} and
+     discards non-Stripe payloads. Posting intake there loses paying customers. */
+};
+
+/* state — in memory only, no browser storage anywhere */
+var D={title:"",market:"",sen:"",ind:"",skills:"",head:"",name:"",url:"",vis:"",open:"",fn:"",stage:"",email:"",consent:false};
+var step=1, TOTAL=5;
+
+/* Stripe hands the checkout session back on the redirect. It's what WF-B
+   uses to match a payment to this intake, so it must survive into the payload. */
+var SESSION_ID=(function(){ try{ return new URLSearchParams(location.search).get("session_id")||""; }catch(e){ return ""; } })();
+/* Two audiences land here. Someone redirected from Stripe has paid — show the
+   form and nothing that tries to sell them what they just bought. Someone who
+   found the URL has not — send them to /file rather than handing them a form
+   that implies the search is free. The "already ordered" escape exists because
+   a bookmark or a later visit loses the session_id, and blocking a paying
+   customer is worse than accepting an unmatched intake. */
+function showForm(){
+  document.getElementById("gate").style.display="none";
+  document.getElementById("apply").style.display="";
+}
+if(SESSION_ID){
+  document.getElementById("paidbanner").style.display="block";
+  document.getElementById("eyebrow").textContent="Order confirmed";
+  document.getElementById("h1").textContent="Thank you. Now tell me the role.";
+  document.getElementById("sub").textContent="Five short screens. The search can't run without these — the more exact you are, the more useful the answer.";
+  showForm();
+} else {
+  document.getElementById("gate").style.display="";
+  document.getElementById("already").addEventListener("click",function(e){
+    e.preventDefault(); showForm();
+    document.getElementById("apply").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+}
+
+var VIS=[["yes","Yes — anyone can see it"],["no","No — it's restricted"],["unsure","I don't know"]];
+var OPEN=[["rec","Yes — visible to recruiters only"],["all","Yes — the public #OpenToWork badge"],["no","No"],["unsure","I don't know"]];
+
+function radios(host,defs,key){
+  var h=document.getElementById(host); h.innerHTML="";
+  defs.forEach(function(d){
+    var l=document.createElement("label"); l.className="r";
+    var i=document.createElement("input"); i.type="radio"; i.name=key; i.value=d[0];
+    i.onchange=function(){ D[key]=d[0];
+      h.querySelectorAll("label").forEach(function(x){x.classList.remove("on")});
+      l.classList.add("on"); val();
+    };
+    var s=document.createElement("span"); s.textContent=d[1];
+    l.appendChild(i); l.appendChild(s); h.appendChild(l);
+  });
+}
+radios("rvis",VIS,"vis"); radios("ropen",OPEN,"open");
+
+function gv(id){var e=document.getElementById(id);return e?e.value.trim():""}
+function val(){
+  D.title=gv("title"); D.market=gv("market"); D.sen=gv("sen"); D.ind=gv("ind");
+  D.skills=gv("skills"); D.head=gv("head"); D.name=gv("name"); D.url=gv("url");
+  D.fn=gv("fn"); D.stage=gv("stage"); D.email=gv("email");
+  D.consent=document.getElementById("consent").checked;
+  document.getElementById("consentbox").classList.toggle("on",D.consent);
+  document.getElementById("n1").disabled=!(D.title.length>1&&D.market.length>1&&D.sen&&D.ind.length>1);
+  document.getElementById("n2").disabled=!(D.skills.length>2&&D.head.length>2);
+  document.getElementById("n3").disabled=!(D.name.length>1&&/linkedin\.com\/in\//i.test(D.url));
+  document.getElementById("n4").disabled=!(D.vis&&D.open);
+  document.getElementById("n5").disabled=!(D.fn&&D.stage&&D.consent&&/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(D.email));
+}
+val();
+
+function go(n){
+  document.getElementById(step===6?"fdone":"f"+step).classList.remove("on");
+  step=n;
+  document.getElementById(step===6?"fdone":"f"+step).classList.add("on");
+  document.getElementById("pb").style.width=(step>=6?100:Math.round(((step-1)/TOTAL)*100))+"%";
+  document.getElementById("pl").textContent= step>=6 ? "Request received" : "Step "+step+" of "+TOTAL;
+  document.getElementById("apply").scrollIntoView({behavior:"smooth",block:"start"});
+  if(step<6){var f=document.getElementById("f"+step).querySelector("input,select");if(f)setTimeout(function(){f.focus()},260);}
+}
+
+var SEN={ic:"Individual contributor",mgr:"Manager",head:"Head of / Director",vp:"VP or above"};
+
+function payload(){
+  return {
+    email:D.email,
+    archetype:{title:D.title,market:D.market,seniority:D.sen,industry:D.ind,skills:D.skills},
+    identity:{name:D.name,profileUrl:D.url},
+    crosscheck:{statedHeadline:D.head,statedVisibility:D.vis,statedOpenTo:D.open},
+    segmentation:{function:D.fn,seniority:D.sen,searchStage:D.stage},
+    consent:D.consent,
+    stripeSessionId:SESSION_ID,
+    method:"v2.1",
+    tool:"candidate-file-intake-v2",
+    requestedAt:new Date().toISOString(),
+    submittedAt:new Date().toISOString()   /* WF validators expect this — do not remove */
+  };
+}
+
+/* The confirmation screen only appears on a confirmed 2xx.
+   Telling someone they're queued when nothing was sent is the one
+   failure this form cannot afford — they've already paid. */
+function submitForm(){
+  var btn=document.getElementById("n5"), st=document.getElementById("sendstatus");
+  if(!CONFIG.webhook){
+    st.className="status err";
+    st.textContent="Not connected yet — CONFIG.webhook is empty. Nothing was sent.";
+    console.warn("Intake: CONFIG.webhook not set. Payload was:",payload());
+    return;
+  }
+  btn.disabled=true; btn.textContent="Sending…"; st.className="status"; st.textContent="Sending…";
+  fetch(CONFIG.webhook,{
+    method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(payload()),keepalive:true
+  }).then(function(r){
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return r.text();
+  }).then(function(t){
+    /* A 200 is not proof of acceptance. These workflows answer 200 to
+       everything so upstream senders don't retry, then say in the body
+       whether they actually took it — {"ok":false} or {"ignored":true}
+       means the data was discarded. Treat that as failure, or someone who
+       has paid gets told they're queued when nothing was recorded. */
+    var j=null; try{ j=JSON.parse(t); }catch(e){}
+    if(j && (j.ok===false || j.ignored===true)) throw new Error("rejected by workflow: "+t);
+    document.getElementById("q-arch").textContent = D.title+" · "+D.market+" · "+(SEN[D.sen]||"")+" · "+D.ind;
+    document.getElementById("q-date").textContent = new Date().toLocaleDateString("en-SG",{day:"numeric",month:"short",year:"numeric"});
+    go(6);
+  }).catch(function(e){
+    btn.disabled=false; btn.textContent="Try again";
+    st.className="status err";
+    st.textContent="That didn't go through. Try once more — your answers are still here. If it keeps failing, email account@thefindablecandidate.com and I'll queue you by hand.";
+    console.error("Intake send failed:",e);
+  });
+}
+
+document.addEventListener("keydown",function(e){
+  if(e.key!=="Enter"||step>=6)return;
+  var b=document.getElementById("n"+step);
+  if(b&&!b.disabled&&document.activeElement.tagName!=="BUTTON"){e.preventDefault();b.click();}
+});
+</script>
+</body>
+</html>
