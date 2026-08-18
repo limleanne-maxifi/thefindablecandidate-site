@@ -9,3 +9,6 @@ node_modules/
 # a public endpoint — but keep the habit.
 .env
 .env.*
+
+# Claude Code session state
+.claude/
