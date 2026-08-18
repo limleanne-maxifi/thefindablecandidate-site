@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>Unlock Your Findability — can recruiters actually find you?</title>
+<title>Unlock Your Findability — do you appear in LinkedIn Recruiter searches?</title>
 <style>
 :root{
   --navy:#1F3864;
@@ -145,13 +145,15 @@ a.walink:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
   *{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
 </style>
+<link rel="stylesheet" href="/brand.css">
 </head>
 <body>
 
 <header>
   <div class="hin">
     <div class="brand">The Findable Candidate</div>
-    <h1>Can recruiters actually find you?</h1>
+    <h1>Do you appear in LinkedIn Recruiter searches?</h1>
+    <p class="subhead">We'll run the search a recruiter runs. We'll tell you if you came up, where you ranked, and which filter kept you out.</p>
     <p>Recruiters don't browse LinkedIn. They search it, with filters — title, skills, location. If your profile is missing the words they type, you never show up. No rejection email. Just silence.</p>
     <p class="lede">Tick what's true for you. Your score updates as you go.</p>
   </div>
@@ -437,7 +439,7 @@ function sendit(){
        this brand can't afford. Restore the timing language once Sequence A
        is sending. */
     btn.textContent="You're on the list";
-    st.textContent="I'll send your full fix list, in order, to that address. In the meantime the one above is the one that moves things tonight.";
+    st.textContent="We'll send your full fix list, in order, to that address. In the meantime the one above is the one that moves things tonight.";
   }).catch(function(e){
     btn.disabled=false; btn.textContent="Try again";
     st.className="status err";
@@ -474,7 +476,7 @@ function shareIt(){
     }).catch(fallback);
   } else { fallback(); }
   function fallback(){
-    /* Last resort: select the text so they can copy it by hand. */
+    /* Last resort: select the text so it can be copied manually. */
     st.className="status";
     st.innerHTML="Copy this link: <b>"+CONFIG.shareUrl+"</b>";
   }

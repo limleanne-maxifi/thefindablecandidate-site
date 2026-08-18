@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Findability Check — I'll run the search a recruiter runs</title>
+<title>The Findability Check — we run the search a recruiter runs</title>
 <style>
 :root{
   --navy:#1F3864; --amber:#E8B33C; --off:#F8F9FA; --blue:#2E6FD8;
@@ -142,6 +142,7 @@ footer b{color:var(--ink)}
   .formcard{padding:26px 20px}
 }
 </style>
+<link rel="stylesheet" href="/brand.css">
 </head>
 <body>
 
@@ -163,7 +164,7 @@ footer b{color:var(--ink)}
 <header class="hero">
   <div class="wrap">
     <span class="eyebrow" id="eyebrow">The Findability Check · intake</span>
-    <h1 id="h1">Tell me the role, and I'll run the search.</h1>
+    <h1 id="h1">Tell us the role, and we'll run the search.</h1>
     <p class="sub" id="sub">Five short screens. The more exact you are about the role, the more exact the search — and the more useful the answer.</p>
   </div>
 </header>
@@ -174,9 +175,9 @@ footer b{color:var(--ink)}
     <div class="gatecard">
       <div class="kicker">Before the form</div>
       <h2 style="margin-bottom:14px">This is the intake for the Findability Check.</h2>
-      <p class="body">The Check is a paid search — I run it by hand in a LinkedIn Recruiter seat and report what came back. If you haven't ordered yet, start there.</p>
+      <p class="body">The Check is a paid search run in a LinkedIn Recruiter seat against a target role you are pursuing. It reports whether that search returned you and at what rank, which single filter excluded you if it did not, what the highest-ranked profiles carry in that field that you do not, and the one change to make next. The full query is published, so you can run it again yourself. If you have not ordered yet, start there.</p>
       <a class="btn amber" href="/file" style="margin-top:22px">See the Findability Check</a>
-      <p class="microcopy" style="margin-top:18px">Already ordered and came back later, or lost the link in your receipt? <a href="#" id="already">Take me to the form</a> — I'll match it to your payment by email.</p>
+      <p class="microcopy" style="margin-top:18px">Already ordered and came back later, or lost the link in your receipt? <a href="#" id="already">Take me to the form</a> — we'll match it to your payment by email.</p>
     </div>
   </div>
 </section>
@@ -185,7 +186,7 @@ footer b{color:var(--ink)}
 <section class="pad" id="apply" style="display:none">
   <div class="narrow">
     <div class="kicker">Request a search</div>
-    <h2>What role should I search for?</h2>
+    <h2>What role should we search for?</h2>
     <p class="body">Five short screens. The more exact you are about the role, the more exact the search — and the more useful the answer.</p>
 
     <div class="formcard">
@@ -219,15 +220,15 @@ footer b{color:var(--ink)}
         <p class="hint">Three to five skills or keywords a recruiter would tick when hiring for that role. Not everything you can do — what <em>they</em> would search for.</p>
         <label class="fl" for="skills">Skills / keywords <small>Separate with commas</small></label>
         <input type="text" id="skills" maxlength="160" placeholder="e.g. crisis communications, stakeholder engagement, media relations" oninput="val()">
-        <label class="fl" for="head">Your LinkedIn headline, as it reads right now <small>Copy and paste it. I'll compare it against what the index actually shows.</small></label>
+        <label class="fl" for="head">Your LinkedIn headline, as it reads right now <small>Copy and paste it. We'll compare it against what the index actually shows.</small></label>
         <input type="text" id="head" maxlength="220" placeholder="Paste your current headline" oninput="val()">
         <div class="nav2"><button class="back" onclick="go(1)">Back</button><button class="next" id="n2" disabled onclick="go(3)">Next</button></div>
       </div>
 
       <!-- 3 -->
       <div class="fstep" id="f3">
-        <h3>So I can find you</h3>
-        <p class="hint">Before running the search I look you up by name. If I can find you that way but the role search doesn't return you, that's the whole finding — and it's airtight.</p>
+        <h3>So we can find you</h3>
+        <p class="hint">Before running the search we look you up by name. If we can find you that way but the role search doesn't return you, that's the whole finding — and it's airtight.</p>
         <label class="fl" for="name">Full name, as it appears on LinkedIn</label>
         <input type="text" id="name" maxlength="80" placeholder="Your full name" oninput="val()">
         <label class="fl" for="url">LinkedIn profile URL</label>
@@ -249,7 +250,7 @@ footer b{color:var(--ink)}
       <!-- 5 -->
       <div class="fstep" id="f5">
         <h3>Where should I send it?</h3>
-        <p class="hint">Your file lands by email once your role's search has been run. Two last things so I queue you into the right one.</p>
+        <p class="hint">Your file lands by email once your role's search has been run. Two last things so we queue you into the right one.</p>
         <label class="fl" for="fn">Which function is this role in?</label>
         <select id="fn" onchange="val()">
           <option value="">Choose…</option>
@@ -368,7 +369,7 @@ function showForm(){
 if(SESSION_ID){
   document.getElementById("paidbanner").style.display="block";
   document.getElementById("eyebrow").textContent="Order confirmed";
-  document.getElementById("h1").textContent="Thank you. Now tell me the role.";
+  document.getElementById("h1").textContent="Thank you. Now tell us the role.";
   document.getElementById("sub").textContent="Five short screens. The search can't run without these — the more exact you are, the more useful the answer.";
   showForm();
 } else {
@@ -472,7 +473,7 @@ function submitForm(){
   }).catch(function(e){
     btn.disabled=false; btn.textContent="Try again";
     st.className="status err";
-    st.textContent="That didn't go through. Try once more — your answers are still here. If it keeps failing, email account@thefindablecandidate.com and I'll queue you by hand.";
+    st.textContent="That didn't go through. Try once more — your answers are still here. If it keeps failing, email account@thefindablecandidate.com and we'll queue you directly.";
     console.error("Intake send failed:",e);
   });
 }
