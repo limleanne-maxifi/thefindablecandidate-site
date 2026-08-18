@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>The Candidate File — I'll run the search a recruiter runs</title>
+<title>The Findability Check — I'll run the search a recruiter runs</title>
 <meta name="description" content="I run the search a recruiter would run for your role, manually, in a paid LinkedIn Recruiter seat — and tell you whether you came up, where you ranked, and which filter kept you out.">
 <style>
 :root{
@@ -95,7 +95,7 @@ footer a{color:var(--blue)}
     <ol class="steps">
       <li><b>You tell me the role</b><span>The exact job title you want next, where, at what level, in which industry. That's what builds the search — the same filters a recruiter would set.</span></li>
       <li><b>I run it in LinkedIn Recruiter</b><span>Manually, in a paid seat, screen recorded. First I find you by name to prove you're in the index. Then I run the real search and remove one filter at a time until you appear.</span></li>
-      <li><b>You get the File</b><span>Whether you came up, where you ranked, which single filter excluded you, what the top ten carry that you don't — and one thing to change tonight.</span></li>
+      <li><b>You get the Check</b><span>Whether you came up, where you ranked, which single filter excluded you, what the top ten carry that you don't — and one thing to change tonight.</span></li>
     </ol>
 
     <div class="proof">
@@ -108,55 +108,46 @@ footer a{color:var(--blue)}
   <div class="card">
     <div class="sect">The method</div>
     <h2>You don't have to trust me. You can check me.</h2>
-    <p class="why">Every File publishes the full query — the exact filters, the tier, the date, the result count. Run it yourself if you want to. <b>A published query can be checked; a claim can only be believed.</b></p>
+    <p class="why">Every Check publishes the full query — the exact filters, the tier, the date, the result count. Run it yourself if you want to. <b>A published query can be checked; a claim can only be believed.</b></p>
     <p class="why"><b>Run manually, in a paid seat.</b> No scraping, no bots, no extraction tools. A person builds the search and runs it, at your request.</p>
     <p class="why"><b>Scope is always declared.</b> Search tiers see different slices of LinkedIn. Yours states which tier ran it. If you fall outside that tier's reach, you're reported as out of scope — never as absent.</p>
     <p class="why"><b>One filter at a time.</b> Filters come off one by one until you appear. The first removal that admits you is the thing excluding you. That's a cause, not a guess.</p>
     <p class="why"><b>What this doesn't claim.</b> It measures whether you get found. Not whether you get hired. Anyone promising the second from a profile edit is selling you something.</p>
 
     <div class="cta" id="cta">
-      <div class="k" id="ctak">The Candidate File</div>
-      <h3 id="ctah">S$28</h3>
+      <div class="k" id="ctak">The Findability Check</div>
+      <h3 id="ctah">S$49</h3>
       <p id="ctap">One search, run by hand, reported in full. Delivered by email.</p>
-      <a class="buy" id="buy" href="#">Order the File</a>
-      <p class="terms" id="ctaterms">7-day no-questions refund · findable ≠ hireable</p>
+      <a class="buy" id="buy" href="#">Order the Check</a>
+      <p class="terms" id="ctaterms">7-day no-questions refund · findable ≠ hireable<br>Additional roles S$29 each, once your first Check is delivered</p>
     </div>
 
-    <p class="note"><b>On the queue:</b> searches run in batches by role — everyone chasing the same title, market and level goes into one run. That batching is why it costs S$28 rather than what an hour of manual searching normally costs. You'll get a delivery date when you order, and I'll email you if it moves. Not sure yet? <a href="/checklist">Run the free checklist first</a> — three minutes, no payment.</p>
+    <p class="note"><b>On the queue:</b> searches run in batches by role — everyone chasing the same title, market and level goes into one run. That batching is why it costs S$49 rather than what an hour of manual searching normally costs. You'll get a delivery date when you order, and I'll email you if it moves. Not sure yet? <a href="/checklist">Run the free checklist first</a> — three minutes, no payment.</p>
   </div>
 
 </div>
 
 <footer>
-  <b>The Candidate File</b> — from The Findable Candidate, by Maxifi Digital.<br>
+  <b>The Findability Check</b> — from The Findable Candidate, by Maxifi Digital.<br>
   Method v2.1 · observed search · full protocol published.<br>
   <a href="/privacy">Privacy</a> · <a href="/terms">Terms &amp; refunds</a>
 </footer>
 
 <script>
 /* ════════════════════════════════════════════════════════════════════
-   CONFIG — same two Stripe links as the checklist. Keep them in sync.
+   CONFIG — same Stripe link as the checklist. Keep them in sync (invariant 13).
    ════════════════════════════════════════════════════════════════════ */
 var CONFIG = {
-  orderPre:     "https://buy.stripe.com/00w00i3MWfMu11x9g76g801",
-  orderList:    "https://buy.stripe.com/aFa3cu3MW8k29y30JB6g802",
-  preorderEnds: "2026-08-10"
+  orderList:    "https://buy.stripe.com/00waEW5V4bwe39FgIz6g803"
 };
 
-/* Reverts itself on the 11th. A deadline that slides is fake scarcity,
-   so the page enforces it rather than relying on anyone remembering. */
+/* The pre-order window closed on 10 Aug 2026. Its machinery was removed
+   rather than left dormant: a discount link in page source is a price
+   anyone can still pay. One price, one link. */
 (function(){
-  var pre = new Date().toISOString().slice(0,10) <= CONFIG.preorderEnds;
-  var url = pre ? (CONFIG.orderPre||CONFIG.orderList) : CONFIG.orderList;
+  var url = CONFIG.orderList;
   if(!url){ document.getElementById("cta").style.display="none"; return; }
   document.getElementById("buy").href = url;
-  if(pre){
-    document.getElementById("ctak").textContent   = "Pre-order · closes 10 August";
-    document.getElementById("ctah").textContent   = "S$9.80";
-    document.getElementById("ctap").textContent   = "One search, run by hand, reported in full. Delivered by email.";
-    document.getElementById("buy").textContent    = "Pre-order the File — S$9.80";
-    document.getElementById("ctaterms").textContent = "First 20 only · delivered by 22 August · S$28 from 11 August · 7-day refund";
-  }
 })();
 </script>
 </body>

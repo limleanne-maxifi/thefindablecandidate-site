@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>The Findability Checklist — can recruiters actually find you?</title>
+<title>Unlock Your Findability — can recruiters actually find you?</title>
 <style>
 :root{
   --navy:#1F3864;
@@ -215,8 +215,8 @@ a.walink:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
     <div class="offer" id="offer">
       <div class="k" id="offerk">The next step</div>
       <h3 id="offerh"></h3>
-      <p>This scored what you told us. The Candidate File runs the search a recruiter would actually run for your role — and tells you if you came up, where you ranked, and which filter kept you out.</p>
-      <button class="go" id="orderbtn" onclick="order()">Order the Candidate File</button>
+      <p>This scored what you told us. The Findability Check runs the search a recruiter would actually run for your role — and tells you if you came up, where you ranked, and which filter kept you out.</p>
+      <button class="go" id="orderbtn" onclick="order()">Order the Findability Check</button>
       <p class="terms" id="offerterms"></p>
     </div>
 
@@ -235,9 +235,9 @@ a.walink:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
     <div class="divide"></div>
     <button class="share" id="sharebtn" onclick="shareIt()">Share the checklist (not your score)</button>
     <a class="share walink" id="walink" target="_blank" rel="noopener">Send it on WhatsApp</a>
-    <p class="status" id="sharestatus">Sends the tool, never your number. Share it and you skip the queue when you order your File — 48 hours' priority.</p>
+    <p class="status" id="sharestatus">Sends the tool, never your number. Share it and you skip the queue when you order your Check — 48 hours' priority.</p>
 
-    <p class="note">This is a self-check — it scores what you tell it. The paid Candidate File is different: we run the actual search a recruiter would run for your role and tell you if you came up, where you ranked, and which filter kept you out. Your email, our <a href="/privacy">privacy notice</a>; the File carries a 7-day no-questions <a href="/terms">refund</a>. <span class="stamp" id="stamp">Checklist v2 · Aug 2026</span></p>
+    <p class="note">This is a self-check — it scores what you tell it. The paid Findability Check is different: we run the actual search a recruiter would run for your role and tell you if you came up, where you ranked, and which filter kept you out. Your email, our <a href="/privacy">privacy notice</a>; the Check carries a 7-day no-questions <a href="/terms">refund</a>. <span class="stamp" id="stamp">Checklist v2 · Aug 2026</span></p>
   </div>
 
 </div>
@@ -250,10 +250,8 @@ a.walink:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
    ════════════════════════════════════════════════════════════════════ */
 var CONFIG = {
   webhook:      "https://lloop.app.n8n.cloud/webhook/checklist-capture",  // n8n WF-A "Checklist capture" production
-  orderPre:     "https://buy.stripe.com/00w00i3MWfMu11x9g76g801",  // File — National Day pre-order S$9.80
-  orderList:    "https://buy.stripe.com/aFa3cu3MW8k29y30JB6g802",  // File — S$28 list (surfaces 11 Aug)
+  orderList:    "https://buy.stripe.com/00waEW5V4bwe39FgIz6g803",  // The Findability Check
   shareUrl:     "https://thefindablecandidate.com/shared",  // dedicated path so peer shares attribute separately from written content
-  preorderEnds: "2026-08-10",                               // inclusive. After this date the page shows list price by itself.
   beacon:       false                                       // abandonment tracking. Leave OFF until WF-A branches on
                                                             // event === "abandoned"; otherwise partial rows hit the
                                                             // beehiiv upsert with an empty email. Flip to true after.
@@ -310,7 +308,7 @@ function bandOf(s){
    : s<=44?["Near Miss","You're in the database, but at least one hard filter is knocking you out before anyone sees you. Usually it's one field."]
    : s<=64?["Half-Findable","Some searches return you. Probably not the one that matters. The gaps left are specific and fixable."]
    : s<=84?["Findable","You'd come back for most searches in your lane. What's left is the difference between appearing and being chosen from the list."]
-   : ["Cited","Strong. Machines can find you, tell you apart, and back you up. The next question is what they say — that's what the File checks."];
+   : ["Cited","Strong. Machines can find you, tell you apart, and back you up. The next question is what they say — that's what the Check checks."];
 }
 /* --- weighted score counter: 280ms, ease-out, tabular digits --- */
 var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -369,30 +367,27 @@ function reveal(){
   document.getElementById("bandmean").textContent=b[1];
   var missed=ITEMS.filter(function(x){return !checked[x[1]]}).sort(function(a,b){return a[6]-b[6]});
   document.getElementById("fixtext").textContent = missed.length? missed[0][5]
-    : "Nothing on this list. Genuinely rare. The next question is what the actual search returns — and that's exactly what the Candidate File checks.";
+    : "Nothing on this list. Genuinely rare. The next question is what the actual search returns — and that's exactly what the Findability Check checks.";
   paintOffer();
   var r=document.getElementById("result");
   r.style.display="block";
   landOn(r);
   r.focus({preventScroll:true});
 }
-/* The pre-order block expires by itself on the printed date.
-   A deadline that slides is fake scarcity — so the page enforces it. */
+/* One price, one link. The pre-order window closed on 10 Aug 2026 and its
+   machinery was removed rather than left dormant — a dead discount link in
+   page source is a price anyone can still pay. */
 function paintOffer(){
-  var pre = new Date().toISOString().slice(0,10) <= CONFIG.preorderEnds;
-  var url = pre ? (CONFIG.orderPre||CONFIG.orderList) : CONFIG.orderList;
+  var url = CONFIG.orderList;
   if(!url) return;                        /* no link configured → no dead button */
-  document.getElementById("offerk").textContent   = pre? "Pre-order · closes 10 August" : "The next step";
-  document.getElementById("offerh").textContent   = pre? "The Candidate File — S$9.80" : "The Candidate File — S$28";
-  document.getElementById("offerterms").textContent = pre
-    ? "First 20 only · delivered by 22 August · S$28 from 11 August"
-    : "Delivered by email · 7-day no-questions refund";
-  document.getElementById("orderbtn").textContent = pre? "Pre-order the File — S$9.80" : "Order the File — S$28";
+  document.getElementById("offerk").textContent   = "The next step";
+  document.getElementById("offerh").textContent   = "The Findability Check — S$49";
+  document.getElementById("offerterms").textContent = "Delivered by email · 7-day no-questions refund";
+  document.getElementById("orderbtn").textContent = "Order the Check — S$49";
   document.getElementById("offer").style.display="block";
 }
 function order(){
-  var pre = new Date().toISOString().slice(0,10) <= CONFIG.preorderEnds;
-  var url = pre ? (CONFIG.orderPre||CONFIG.orderList) : CONFIG.orderList;
+  var url = CONFIG.orderList;
   if(url) window.open(url,"_blank","noopener");
 }
 function ve(){ document.getElementById("send").disabled=!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(document.getElementById("em").value.trim()); }
@@ -450,7 +445,7 @@ function sendit(){
     console.error("Checklist send failed:",e);
   });
 }
-var SHARETXT="I just ran the Findability Checklist — it shows you whether recruiter searches can actually find you, and what to fix first. Three minutes, free: "+CONFIG.shareUrl;
+var SHARETXT="I just ran Unlock Your Findability — it shows you whether recruiter searches can actually find you, and what to fix first. Three minutes, free: "+CONFIG.shareUrl;
 /* wa.me is a deterministic path that doesn't depend on the OS share sheet.
    On desktop the native sheet hands off to the installed WhatsApp app, which
    can fail on its own — this link goes to WhatsApp Web instead. */
@@ -459,7 +454,7 @@ document.getElementById("walink").addEventListener("click",function(){ didShare=
 function banked(){
   var st=document.getElementById("sharestatus");
   st.className="status";
-  st.textContent="That's your 48-hour queue priority banked. Order the File any time and you skip the batch.";
+  st.textContent="That's your 48-hour queue priority banked. Order the Check any time and you skip the batch.";
 }
 function shareIt(){
   var st=document.getElementById("sharestatus");
