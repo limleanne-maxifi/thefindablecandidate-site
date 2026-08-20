@@ -207,3 +207,16 @@ header{padding-top:46px;padding-bottom:42px}
   header{padding-top:36px;padding-bottom:32px}
   .hero{padding-top:34px;padding-bottom:28px}
 }
+
+/* --- semantic colour sweep: amber marks a MISS only, never decoration --- */
+/* intake page carried amber as an accent colour; reassigned. */
+.kicker{color:var(--ink-soft)}
+.method .body b{color:var(--navy)}
+.mcard h4{color:var(--navy)}
+.card .num{color:var(--teal)}
+.stat .n{color:var(--navy)}
+.queue .v{color:var(--navy)}
+.sample{border-left-color:var(--navy)}
+h1 em{color:#7FD3C8}
+/* deliberately still amber, pending band-driven colouring:
+   .track>i (score meter) and .bandbig .v (band label) on the free tier. */
