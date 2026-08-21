@@ -159,6 +159,30 @@ Branch → PR → CI preflight → Netlify deploy preview → merge to `main` �
 
 ---
 
+## Email and DNS
+
+The domain's DNS is at **Hostinger** (nameservers `pixel/byte.dns-parking.com`), edited in hPanel → Manage DNS. Mail moved to **Hostinger Email on 21 August 2026**; the previous ImprovMX forwarding account was deleted.
+
+| Record | Value |
+|---|---|
+| MX | `mx1.hostinger.com` (5), `mx2.hostinger.com` (10) |
+| SPF | `v=spf1 include:_spf.mail.hostinger.com ~all` |
+| DKIM | `hostingermail-{a,b,c}._domainkey` CNAME → `hostingermail-{a,b,c}.dkim.mail.hostinger.com` |
+| DMARC | `v=DMARC1; p=none; rua=mailto:dpo@thefindablecandidate.com` |
+
+**One SPF record, never two.** When Amazon SES begins sending as this domain, extend the existing record rather than adding another — `v=spf1 include:_spf.mail.hostinger.com include:amazonses.com ~all`. Two SPF TXT records is a permerror, and a permerror fails the whole check, so the correct fix looks identical to the broken one until a receiver rejects the mail.
+
+### Mailboxes — 2 of 2 used
+
+| Address | Type | Purpose |
+|---|---|---|
+| `dpo@` | Full mailbox, no forwarding | The published Data Protection Officer contact. PDPA correspondence, data subject requests, DMARC reports |
+| `account@` | Forwards out, alias `welcome@` attached | Orders, refunds, general enquiries |
+
+**There are no spare mailbox slots.** Any new address must be an alias on `account@` — five are available — not a new mailbox. Anything routed to `dpo@` should be there because it is a data protection matter, not because it needed somewhere to go.
+
+---
+
 ## Related repositories
 
 - **`the-findable-candidate-app`** — `app.thefindablecandidate.com`, the authenticated application behind The Opportunity Check. Next.js on Netlify. Its ADRs govern product, pricing and voice; this repository implements them and never overrides them. Where a decision here would contradict an ADR there, the answer is a new ADR proposed to the operator, never a quiet deviation in a page.

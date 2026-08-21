@@ -148,6 +148,7 @@ header .brand::after{background:#7FD3C8}
 /* Section rules and list bullets on the legal and order pages */
 .sect::after,.brand::after{background:var(--teal)}
 li::before{background:var(--teal)}
+ul.plain li::before{background:var(--teal)}
 
 /* ── hero scale ───────────────────────────────────────────────────────
    The question is the largest thing on the site. Everything under it steps
