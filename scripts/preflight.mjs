@@ -175,6 +175,97 @@ for (const f of htmlFiles()) {
   if (prices.size) notes.push(`prices present across the bundle: ${[...prices].sort().join(" · ")}`);
 }
 
+/* ------------------------ 10 · rewrite targets exist in the bundle ------- */
+{
+  const rules = read("site/_redirects")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith("#"));
+  let resolved = 0;
+  for (const rule of rules) {
+    const parts = rule.split(/\s+/);
+    const from = parts[0];
+    const to = parts[1];
+    if (!to || !to.startsWith("/") || to.startsWith("//")) continue;
+    if (to.includes("*") || to.includes(":")) continue;
+    const base = join(SITE, to.replace(/^\//, ""));
+    const found = to.endsWith("/")
+      ? existsSync(join(base, "index.html"))
+      : existsSync(base) || existsSync(join(base, "index.html"));
+    if (!found) {
+      fail(
+        "F-04",
+        "_redirects sends " + from + " to " + to + ", which does not exist under " + SITE +
+          "/ — the rule would 404 at a URL that is already printed and spoken"
+      );
+    }
+    resolved++;
+  }
+  notes.push(resolved + " rewrite targets resolved in the bundle");
+}
+
+/* ----------------------- 11 · netlify.toml structural sanity ------------- */
+{
+  const TOML = "netlify.toml";
+  if (!existsSync(TOML)) {
+    fail("F-TOML", "netlify.toml is missing — Netlify would deploy with no publish dir, no build gate and no security headers");
+  } else {
+    const raw = read(TOML);
+
+    const publish = raw.match(/^[ \t]*publish[ \t]*=[ \t]*"([^"]*)"/m);
+    if (!publish) {
+      fail("F-TOML", "netlify.toml has no [build] publish key");
+    } else if (publish[1].replace(/\/$/, "") !== SITE) {
+      fail("F-TOML", 'netlify.toml publishes "' + publish[1] + '" but this preflight checks "' + SITE + '/" — one of the two is wrong');
+    }
+
+    const command = raw.match(/^[ \t]*command[ \t]*=[ \t]*"([^"]*)"/m);
+    if (!command) {
+      fail("F-TOML", "netlify.toml has no [build] command — nothing would gate the deploy");
+    } else if (!/preflight\.mjs/.test(command[1])) {
+      fail("F-TOML", 'netlify.toml build command is "' + command[1] + '" — it no longer runs this preflight, so every check above is unenforced on deploy');
+    }
+
+    const blocks = [];
+    let cur = null;
+    raw.split("\n").forEach((l, i) => {
+      const t = l.trim();
+      if (!t || t.startsWith("#")) return;
+      if (t === "[[headers]]") {
+        cur = { line: i + 1, path: null, values: false, keys: 0 };
+        blocks.push(cur);
+        return;
+      }
+      if (t === "[headers.values]") {
+        if (cur) cur.values = true;
+        return;
+      }
+      if (t.startsWith("[")) {
+        cur = null;
+        return;
+      }
+      if (!cur) return;
+      const p = t.match(/^for[ \t]*=[ \t]*"([^"]*)"/);
+      if (p) cur.path = p[1];
+      else if (cur.values && t.includes("=")) cur.keys++;
+    });
+
+    for (const b of blocks) {
+      const at = "netlify.toml:" + b.line + " ";
+      if (!b.path) fail("F-TOML", at + '[[headers]] block has no quoted for = "..." path');
+      if (!b.values) fail("F-TOML", at + "[[headers]] block has no [headers.values]");
+      else if (!b.keys) fail("F-TOML", at + "[[headers]] block sets no headers");
+      if (b.path && b.path.endsWith(".html")) {
+        warn(
+          "W-TOML",
+          at + 'for = "' + b.path + '" matches on the request path, but the pages are served at directory URLs (/, /file/, /privacy/) which do not end in .html — this block may match nothing. Confirm with: curl -sI https://thefindablecandidate.com/file/'
+        );
+      }
+    }
+    notes.push(blocks.length + " [[headers]] blocks parsed");
+  }
+}
+
 report();
 
 /* ----------------------------------------------------------------- output */
