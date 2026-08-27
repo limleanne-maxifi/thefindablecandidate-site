@@ -41,3 +41,13 @@
     # Short cache: these pages carry live prices and a self-reverting pre-order
     # block (invariant 12). A long cache would keep a stale price on screen.
     Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/playbook"
+  [headers.values]
+    Content-Disposition = 'inline; filename="linkedin-visibility-playbook-for-jobseekers.pdf"'
+    Cache-Control = "public, max-age=3600"
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
