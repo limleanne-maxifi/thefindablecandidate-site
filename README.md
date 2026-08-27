@@ -15,6 +15,7 @@ site/                    ← the publish directory, exactly what goes on the dom
   intake/index.html      Post-purchase intake form
   privacy/index.html     Privacy notice
   terms/index.html       Terms and refunds
+  assets/                the LinkedIn Visibility Playbook PDF — served at /playbook (200)
   _redirects             source-path rewrites — status 200 only (invariant 3)
 netlify.toml             publish dir, build = preflight, security headers
 scripts/preflight.mjs    the invariants, enforced as a build gate
