@@ -23,3 +23,9 @@
 
 # Real directories — no rules needed, listed here so nobody "tidies" them in:
 #   /file  /intake  /privacy  /terms
+
+# Lead magnet — added 26 Aug 2026.
+# 200 like everything else here: the URL stays /playbook, which is what gets
+# spoken on video and printed in RRL 1's welcome email. The PDF underneath can
+# be re-cut and redeployed without touching a live email workflow.
+/playbook   /assets/linkedin-visibility-playbook-for-jobseekers.pdf   200
