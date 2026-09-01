@@ -15,6 +15,8 @@ site/                    ← the publish directory, exactly what goes on the dom
   intake/index.html      Post-purchase intake form
   privacy/index.html     Privacy notice
   terms/index.html       Terms and refunds
+  start/index.html       Campaign landing page for the free self-check
+  welcome/index.html     Post-capture next steps and playbook access
   assets/                the LinkedIn Visibility Playbook PDF — served at /playbook (200)
   _redirects             source-path rewrites — status 200 only (invariant 3)
 netlify.toml             publish dir, build = preflight, security headers
@@ -80,7 +82,7 @@ Branch → PR → CI preflight → Netlify deploy preview → merge to `main` �
 
 | Check | Rule |
 |---|---|
-| **F-01** | all five pages and `_redirects` present |
+| **F-01** | all seven pages and `_redirects` present |
 | **F-03** | every `_redirects` rule uses status **200**, never 301 — a 30x rewrites the URL and every lead reports `source: direct`, destroying the only measurement the link scheme exists for |
 | **F-08** | no `localStorage` / `sessionStorage` anywhere |
 | **F-09** | no external subresources — no web fonts, no CDN, no analytics library (this is also why there is no cookie banner) |
@@ -88,6 +90,7 @@ Branch → PR → CI preflight → Netlify deploy preview → merge to `main` �
 | **F-13** | Stripe links identical between the checklist and `/file`, or the two paths quote different prices |
 | **F-LEGAL** | **no unanswered `[OPERATOR DECISION REQUIRED]` / `[You supply]` block in the privacy or terms pages** |
 | **F-PH** | no `[LINK]` placeholders, no empty `CONFIG.webhook` |
+| **F-LP** | `/start`, `/welcome` and the checklist retain their critical funnel links |
 | **W-07** | warns if `CONFIG.beacon` is `true` — it stays false until WF-A branches on `event === "abandoned"`, or partial rows hit the beehiiv upsert with an empty email |
 
 ### The stop condition, stated plainly
@@ -98,7 +101,7 @@ Twelve decisions (D-01…D-12 in the decision register) block publication of the
 
 `netlify.toml` ships CSP in **report-only** mode, built from what the pages actually do: inline styles and scripts (`'unsafe-inline'` — removing it is a rebuild, not a config change), a `data:` URI for the select chevron, and `connect-src` for the n8n capture webhook. Stripe and WhatsApp links are navigations, not fetches, so they need no entry.
 
-Load all five pages with DevTools open, confirm zero violations, then drop the `-Report-Only` suffix to enforce it.
+Load all seven pages with DevTools open, confirm zero violations, then drop the `-Report-Only` suffix to enforce it.
 
 ## What this repo is not
 
