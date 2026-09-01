@@ -40,6 +40,8 @@ const REQUIRED = [
   "site/intake/index.html",
   "site/privacy/index.html",
   "site/terms/index.html",
+  "site/start/index.html",
+  "site/welcome/index.html",
   "site/_redirects",
 ];
 for (const f of REQUIRED) {
@@ -75,6 +77,24 @@ for (const f of htmlFiles()) {
   if (/\b(localStorage|sessionStorage)\b/.test(src)) {
     fail("F-08", `${relative(".", f)} uses browser storage — invariant 8 forbids it everywhere`);
   }
+}
+
+/* ------------------------- 8a · campaign landing-route contracts -------- */
+{
+  const requiredLinks = {
+    "site/start/index.html": ["/brand.css", "/checklist?s=start", "/privacy"],
+    "site/welcome/index.html": ["/brand.css", "/playbook", "/file", "/privacy"],
+    "site/index.html": ["/welcome"],
+  };
+  for (const [file, hrefs] of Object.entries(requiredLinks)) {
+    const src = read(file);
+    for (const href of hrefs) {
+      if (!src.includes(href)) {
+        fail("F-LP", `${relative(".", file)} is missing required route link: ${href}`);
+      }
+    }
+  }
+  notes.push("/start and /welcome route contracts checked");
 }
 
 /* -------------------------------- 4 · invariant 9: no external subresources */

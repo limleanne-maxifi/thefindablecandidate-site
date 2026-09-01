@@ -434,12 +434,10 @@ function sendit(){
        whether they took it. {"ok":false} or {"ignored":true} means discarded. */
     var j=null; try{ j=JSON.parse(t); }catch(e){}
     if(j && (j.ok===false || j.ignored===true)) throw new Error("rejected by workflow: "+t);
-    /* Deliberately does not say "check your inbox" — the welcome sequence
-       isn't live yet, and a promise the system can't keep is the one thing
-       this brand can't afford. Restore the timing language once Sequence A
-       is sending. */
+    /* Acceptance is confirmed by the workflow response. /welcome gives the
+       candidate immediate next steps without promising an email delivery time. */
     btn.textContent="You're on the list";
-    st.textContent="We'll send your full fix list, in order, to that address. In the meantime the one above is the one that moves things tonight.";
+    st.innerHTML="Your request was received. Make the first fix above, then <a href=\"/welcome\">see what to do next</a>.";
   }).catch(function(e){
     btn.disabled=false; btn.textContent="Try again";
     st.className="status err";
